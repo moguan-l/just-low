@@ -1,13 +1,17 @@
-extends layout/default
+extends ../layout/default
 
 block title
     title index
 
 block content
+    include ../widget/header
+
     div(class='page-container', ng-app='testapp')
         div(ng-controller='testctrl')
             p 姓名{{ name }}
             p 年龄{{ age }}
+
+    include ../widget/footer
 
     script(type='text/javascript').
         var app = angular.module('testapp', []);
