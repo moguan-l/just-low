@@ -1,5 +1,17 @@
-extends layout
+extends layout/default
+
+block title
+    title index
 
 block content
-  h1= title
-  p Welcome to #{title}
+    div(class='page-container', ng-app='testapp')
+        div(ng-controller='testctrl')
+            p 姓名{{ name }}
+            p 年龄{{ age }}
+
+    script(type='text/javascript').
+        var app = angular.module('testapp', []);
+        app.controller('testctrl', function($scope) {
+            $scope.name = 'LQJ';
+            $scope.age = '24';
+        });
