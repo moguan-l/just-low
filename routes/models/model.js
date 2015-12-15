@@ -3,8 +3,8 @@
  */
 
 var mongoose = require('mongoose');
-var db = mongoose.createConnection('localhost', 'userapp');
-var user_schema = require('../../models/test.js').user_schema;
+var db = mongoose.createConnection('localhost', 'test');
+var user_schema = require('../../models/test').user_schema;
 var user = db.model('users', user_schema);
 var express = require('express');
 var router = express.Router();

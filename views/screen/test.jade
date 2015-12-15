@@ -4,4 +4,16 @@ block title
     title test
 
 block content
-    h1 test
+    script(type='text/javascript').
+        describe('personList', function() {
+            beforeEach(function() {
+                browser().navigateTo('./index');
+            });
+            it('should filter the person list as person name into the search box', function() {
+                expect(repeater('ul li').count()).toBe(3);
+                input('search').enter('L');
+                expect(repeater('ul li').count()).toBe(2);
+                input('search').enter('LQ');
+                expect(repeater('ul li').count()).toBe(1);
+            });
+        });

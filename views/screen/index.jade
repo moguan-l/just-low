@@ -8,14 +8,20 @@ block content
 
     div(class='page-container', ng-app='testapp')
         div(ng-controller='testctrl')
-            p 姓名{{ name }}
-            p 年龄{{ age }}
+            input(ng-model='search', type='text', name='search')
+            ul
+                li(ng-repeat='person in personList | filter:search')
+                    | {{ person.name }}
+                    p {{ person.age }}
 
     include ../widget/footer
 
     script(type='text/javascript').
         var app = angular.module('testapp', []);
         app.controller('testctrl', function($scope) {
-            $scope.name = 'LQJ';
-            $scope.age = '24';
+            $scope.personList = [
+                {name: 'LQJ', age: 24},
+                {name: 'LX', age: 24},
+                {name: 'HS', age: 24}
+            ];
         });

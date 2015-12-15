@@ -4,6 +4,6 @@
 var mongoose = require('mongoose');
 
 exports.user_schema = new mongoose.Schema({
-    id: 'string',
-    name: 'string'
+    id: 'String',
+    name: 'String'
 });
