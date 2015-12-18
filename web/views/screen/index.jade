@@ -8,20 +8,16 @@ block content
 
     div(class='page-container', ng-app='testapp')
         div(ng-controller='testctrl')
-            input(ng-model='search', type='text', name='search')
             ul
-                li(ng-repeat='person in personList | filter:search')
+                li(ng-repeat='person in personList')
                     | {{ person.name }}
                     p {{ person.age }}
 
     include ../widget/footer
-
+    - var usersStr = JSON.stringify(users)
     script(type='text/javascript').
+        var users = eval('(' + '#{usersStr}'.replace(/&quot;/g, '"') + ')');
         var app = angular.module('testapp', []);
         app.controller('testctrl', function($scope) {
-            $scope.personList = [
-                {name: 'LQJ', age: 24},
-                {name: 'LX', age: 24},
-                {name: 'HS', age: 24}
-            ];
+            $scope.personList = users;
         });
