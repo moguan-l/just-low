@@ -6,7 +6,7 @@ block title
 block content
     include ../widget/header
 
-    div(class='page-container', ng-app='testapp')
+    div(class='page-container')
         div(ng-controller='testctrl')
             ul
                 li(ng-repeat='person in personList')
@@ -14,10 +14,9 @@ block content
                     p {{ person.age }}
 
     include ../widget/footer
-    - var usersStr = JSON.stringify(users)
     script(type='text/javascript').
-        var users = eval('(' + '#{usersStr}'.replace(/&quot;/g, '"') + ')');
-        var app = angular.module('testapp', []);
-        app.controller('testctrl', function($scope) {
-            $scope.personList = users;
+        debugger;
+        JustLow.controller('testctrl', function($scope, userList) {
+            console.log(userList);
+            $scope.personList = userList.query();
         });

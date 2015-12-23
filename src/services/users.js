@@ -11,7 +11,7 @@ var _getUsersOnPages = function(query, callback) {
     }, query);
 
     users.find()
-        .skip(_query.pageIndex)
+        .skip(_query.pageIndex * _query.pageSize)
         .limit(_query.pageSize)
         .exec(typeof callback == 'function' ? callback : null);
 };
