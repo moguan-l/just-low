@@ -4,10 +4,12 @@
 var express = require('express');
 var router = express.Router();
 
+// 页面路由
 router.get(/^\/$|^\/index/, function(req, res) {
     res.render('index', {title: 'index'});
 });
 
+// 数据请求路由
 router.get('/users/search', function(req, res) {
     var users = require('../services/users');
     users.getUsersOnPages({
