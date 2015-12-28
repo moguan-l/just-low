@@ -1,22 +1,21 @@
 extends ../layout/default
 
 block title
-    title index
+    title=title
 
 block content
     include ../widget/header
 
     div(class='page-container')
-        div(ng-controller='testctrl')
-            ul
-                li(ng-repeat='person in personList')
-                    | {{ person.name }}
-                    p {{ person.age }}
+        ul(ng-controller='testctrl')
+            li(ng-repeat='person in personList')
+                | {{ person.name }}
+                p {{ person.age }}
 
     include ../widget/footer
+
     script(type='text/javascript').
-        debugger;
-        JustLow.controller('testctrl', function($scope, userList) {
-            console.log(userList);
-            $scope.personList = userList.query();
-        });
+        JustLow
+            .controller('testctrl', function($scope, userList) {
+                $scope.personList = userList.query();
+            });

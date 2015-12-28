@@ -2,13 +2,13 @@ doctype html
 html(lang='zh-CN', ng-app='JustLow')
     head
         block title
-        link(rel='stylesheet', href='/css/bootstrap.min.css')
-        link(rel='stylesheet', href='/css/common.css')
+        link(rel='stylesheet', href='/css/justlow.css')
         block css
         script(src='/js/libs/angular.min.js')
-        script(src='/js/libs/angular-route.min.js')
+        script(src='/js/libs/angular-resource.min.js')
         script(src='/js/services.js')
-        script(src='/js/routes.js')
+        script.
+            window.JustLow = angular.module('JustLow', ['justLowServices']);
         block js
     body
         block content
