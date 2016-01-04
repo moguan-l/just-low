@@ -3,16 +3,17 @@ extends ../layout/default
 block title
     title=title
 
+block css
+    link(rel='stylesheet', href='/css/index.css')
+
 block content
     include ../widget/header
 
-    div(class='page-container')
-        ul(ng-controller='testctrl')
-            li(ng-repeat='person in personList')
-                | {{ person.name }}
-                p {{ person.age }}
-
-    include ../widget/footer
+    div.page-bg
+        img(src='/images/background/index_bg.jpg')
+    div.page-container(ng-controller='testctrl')
+        ul.user-list.flex.text-center.text-unused
+            li.flex-1.hidden(ng-repeat='person in personList') {{ person.name }}
 
     script(type='text/javascript').
         JustLow

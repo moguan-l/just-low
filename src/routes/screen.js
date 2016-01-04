@@ -6,7 +6,7 @@ var router = express.Router();
 
 // 页面路由
 router.get(/^\/$|^\/index/, function(req, res) {
-    res.render('index', {title: 'index'});
+    res.render('index', {title: 'JustLow'});
 });
 
 // 数据请求路由

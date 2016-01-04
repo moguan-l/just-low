@@ -1,0 +1,28 @@
+.page-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+}
+.page-bg img {
+    display: block;
+    margin-top: -200px;
+    width: 100%;
+    border: none;
+}
+.page-container {
+    margin: 300px 0;
+    height: 500px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 10px #000;
+    -moz-box-shadow: 0 0 10px #000;
+    box-shadow: 0 0 10px #000;
+}
+.user-list {
+    margin: 15px 0;
+    width: 100%;
+}
+.user-list li {
+    float: left;
+}
