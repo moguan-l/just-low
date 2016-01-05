@@ -1,23 +1,35 @@
-.page-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
+body {
+    background-color: #372c3c;
 }
-.page-bg img {
-    display: block;
-    margin-top: -200px;
+header {
+    padding: 20px 0;
     width: 100%;
-    border: none;
+    text-align: center;
+    background: transparent;
+}
+header >  span {
+    font-size: 38px;
+    color: #ac3644;
+    font-weight: bolder;
+}
+header .logo {
+    display: block;
+    margin: 0 auto;
+    width: 100px;
+}
+header .header-menu {
+    padding: 60px 45px 0;
+}
+.header-menu a {
+    padding: 12px 20px;
+    font-size: 18px;
+    color: #e45164;
+}
+.header-menu a:hover {
+    color: #ac3644;
 }
 .page-container {
-    margin: 300px 0;
-    height: 500px;
-    background-color: #fff;
-    -webkit-box-shadow: 0 0 10px #000;
-    -moz-box-shadow: 0 0 10px #000;
-    box-shadow: 0 0 10px #000;
+    height: 800px;
 }
 .user-list {
     margin: 15px 0;

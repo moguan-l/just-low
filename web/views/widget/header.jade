@@ -1,4 +1,20 @@
-header
-    p
-        img(src='/images/logo.png')
+header.flex
+    nav.flex-1.text-right.header-menu
+        a(href='javascript:void(0);') 首页
+        a(href='javascript:void(0);') 测试
+    span
+        img.logo(src='/images/logo.png')
         | JustLow
+    nav.flex-1.text-left.header-menu
+        a(href='javascript:void(0);') 首页
+        a(href='javascript:void(0);') 测试
+
+script(type='text/javascript').
+    JustLow
+            .directive('whenScrolled', function() {
+                return function(scope, elm, attr) {
+                    elm.bind('scroll', function() {
+                        console.log('hello');
+                    });
+                };
+            });

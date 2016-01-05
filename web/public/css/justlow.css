@@ -27,7 +27,6 @@ ol, ul {
 a {
     display: inline-block;
     text-decoration: none;
-    cursor: default;
 }
 input, textarea, a, button {
     -webkit-tap-highlight-color: transparent;
@@ -40,6 +39,10 @@ input::-webkit-inner-spin-button {
 }
 input[type="number"] {
     -moz-appearance: textfield;
+}
+::selection {
+    background: #f4885a;
+    color: #fff;
 }
 /* END 样式初始化 */
 
@@ -131,24 +134,3 @@ input[type="number"] {
     font-size: 16px;
 }
 /* END 通用样式 */
-
-/* header */
-header {
-    padding: 20px 0;
-    width: 100%;
-    height: 100px;
-    background: transparent;
-}
-header >  p {
-    margin: 0 auto;
-    width: 70%;
-    font-size: 24px;
-    color: #fff;
-    font-weight: bolder;
-}
-header img {
-    margin-right: 20px;
-    width: 60px;
-    vertical-align: middle;
-}
-/* END header */

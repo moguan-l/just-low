@@ -9,14 +9,12 @@ block css
 block content
     include ../widget/header
 
-    div.page-bg
-        img(src='/images/background/index_bg.jpg')
     div.page-container(ng-controller='testctrl')
-        ul.user-list.flex.text-center.text-unused
-            li.flex-1.hidden(ng-repeat='person in personList') {{ person.name }}
+        ul.user-list.flex.text-center.text-unused(ng-hide='true')
+            li.flex-1(ng-repeat='person in personList') {{ person.name }}
 
     script(type='text/javascript').
         JustLow
-            .controller('testctrl', function($scope, userList) {
-                $scope.personList = userList.query();
-            });
+                .controller('testctrl', function($scope, userList) {
+                    $scope.personList = userList.query();
+                });
