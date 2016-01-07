@@ -2,10 +2,22 @@ body {
     background-color: #372c3c;
 }
 header {
-    padding: 20px 0;
+    position: absolute;
+    top: 0;
+    padding: 12px 0;
     width: 100%;
     text-align: center;
     background: transparent;
+    -webkit-transition: background .3s;
+    -moz-transition: background .3s;
+    -ms-transition: background .3s;
+    -o-transition: background .3s;
+    transition: background .3s;
+}
+header.fixed {
+    position: fixed;
+    top: -94px;
+    background: #4b354c;
 }
 header >  span {
     font-size: 38px;
@@ -18,17 +30,18 @@ header .logo {
     width: 100px;
 }
 header .header-menu {
-    padding: 60px 45px 0;
+    padding: 64px 45px 0;
 }
 .header-menu a {
-    padding: 12px 20px;
-    font-size: 18px;
+    padding: 8px 20px;
+    font-size: 16px;
     color: #e45164;
 }
 .header-menu a:hover {
     color: #ac3644;
 }
 .page-container {
+    margin-top: 158px;
     height: 800px;
 }
 .user-list {

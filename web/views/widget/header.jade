@@ -1,20 +1,22 @@
-header.flex
+header.flex#header
     nav.flex-1.text-right.header-menu
         a(href='javascript:void(0);') 首页
-        a(href='javascript:void(0);') 测试
     span
         img.logo(src='/images/logo.png')
         | JustLow
     nav.flex-1.text-left.header-menu
-        a(href='javascript:void(0);') 首页
-        a(href='javascript:void(0);') 测试
+        a(href='javascript:void(0);') 更多
 
 script(type='text/javascript').
-    JustLow
-            .directive('whenScrolled', function() {
-                return function(scope, elm, attr) {
-                    elm.bind('scroll', function() {
-                        console.log('hello');
-                    });
-                };
-            });
+    $(window).on('scroll', function() {
+        var bodyScroll = document.body.scrollTop,
+            needScroll = 94,
+            $nav = $('#header > nav');
+        if(bodyScroll <= needScroll) {
+            $nav.css({'padding-top': 64 + bodyScroll * 33 / needScroll + 'px'});
+            $('#header').removeClass('fixed');
+        } else {
+            $nav.css({'padding-top': 97 + 'px'});
+            $('#header').addClass('fixed');
+        }
+    });

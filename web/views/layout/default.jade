@@ -4,11 +4,12 @@ html(lang='zh-CN', ng-app='JustLow')
         block title
         link(rel='stylesheet', href='/css/justlow.css')
         block css
+        script(src='/js/libs/jquery-1.9.1.min.js')
         script(src='/js/libs/angular.min.js')
         script(src='/js/libs/angular-resource.min.js')
         script(src='/js/services.js')
         script.
             window.JustLow = angular.module('JustLow', ['justLowServices']);
         block js
-    body(when-scrolled)
+    body
         block content
