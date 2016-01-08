@@ -3,7 +3,7 @@
  * Created by liqingjie on 16/1/7.
  * 依赖jQuery
  */
-!function($, styleArray, colors, fontSizes, fontFamily) {
+!function($, styleArray, fontColors, fontSizes, fontFamilies) {
     'use strict';
     /**
      * defaultOption, 默认参数
@@ -18,7 +18,7 @@
             showInputType: 'dbclick',
             backgroudColor: 'rgba(75, 53, 76, 0.8)',
             inputLength: 30,
-            colors: colors,
+            colors: fontColors,
             fontSizes: fontSizes
         },
         //-允许的参数类型-
