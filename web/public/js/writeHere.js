@@ -56,9 +56,25 @@
             '<ul class="write-here-tool">',
                 '<li>',
                     '<a href="javascript:void(0);">字体</a>',
+                    function() {
+                        var fontFamiliesHtml = '<nav class="select-menu">';
+                        for(var i in fontFamilies) {
+                            fontFamiliesHtml += '<a href="javascript:void(0);" data-fontFamily="' + fontFamilies[i] + '">' + i + '</a>';
+                        }
+                        fontFamiliesHtml += '</nav>';
+                        return fontFamiliesHtml;
+                    }(),
                 '</li>',
                 '<li>',
                     '<a href="javascript:void(0);">大小</a>',
+            function() {
+                var fontSizesHtml = '<nav class="select-menu">';
+                for(var i in option.fontSizes) {
+                    fontSizesHtml += '<a href="javascript:void(0);">' + option.fontSizes[i] + '</a>';
+                }
+                fontSizesHtml += '</nav>';
+                return fontSizesHtml;
+            }(),
                 '</li>',
                 '<li>',
                     '<a href="javascript:void(0);">颜色</a>',
