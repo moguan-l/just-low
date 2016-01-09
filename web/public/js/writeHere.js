@@ -42,7 +42,7 @@
 
     //-格式化writeHere容器-
     var formatContainer = function(self) {
-        self.css('position') === 'static' && self.css({'position': 'relative', 'scroll-x': 'auto'});
+        self.css('position') === 'static' && self.css({'position': 'relative', 'overflow-x': 'auto'});
         self.attr(containerAttr, true);
     };
 
