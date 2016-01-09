@@ -13,13 +13,19 @@
      * inputLength: number, 输入框允许输入的最大长度，默认15个字符
      * fontColors: string[], 字体颜色值，默认值见下面fontColors
      * fontSizes: number[], 字体大小，默认值见下面fontSizes
+     * multiplyInput: boolean, 容器中是否可出现多个输入框，默认不可以，只有一个
+     * dragable: boolean, 输入框是否可拖拽，默认不可以
+     * inputCallback: function, 输入结束回车之后的回调函数，默认为空
      */
     var defaultOption = {
             showInputType: 'dblclick',
             backgroudColor: 'rgba(75, 53, 76, 0.8)',
             inputLength: 30,
             fontColors: fontColors,
-            fontSizes: fontSizes
+            fontSizes: fontSizes,
+            multiplyInput: false,
+            dragable: false,
+            inputCallback: null
         },
         //-允许的参数类型-
         optionType = ['string', 'object', 'undefined'],
@@ -71,7 +77,7 @@
                         var fontSizesHtml = '<nav class="select-menu">',
                             _fontSizes = option.fontSizes.length > 0 ? option.fontSizes : fontSizes;
                         for(var i = 0; i < _fontSizes.length; i++) {
-                            fontSizesHtml += '<a href="javascript:void(0);">' + _fontSizes[i] + '</a>';
+                            fontSizesHtml += '<a href="javascript:void(0);" data-fontSize="' + _fontSizes[i] + '">' + _fontSizes[i] + 'px</a>';
                         }
                         fontSizesHtml += '</nav>';
                         return fontSizesHtml;
