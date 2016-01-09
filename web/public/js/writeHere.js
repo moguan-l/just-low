@@ -3,22 +3,22 @@
  * Created by liqingjie on 16/1/7.
  * 依赖jQuery
  */
-!function($, styleArray, fontColors, fontSizes, fontFamilies) {
+!function($, cssArray, fontColors, fontSizes, fontFamilies) {
     'use strict';
     /**
      * defaultOption, 默认参数
      ************************************************************************************
-     * showInputType: string, 调出输入框的方式，双击('dbclick')或者右击('rightclick')，默认双击
+     * showInputType: string, 调出输入框的方式，双击('dblclick')或者右击('rightclick')，默认双击
      * backgroudColor: string, 输入框以及编辑菜单背景颜色
      * inputLength: number, 输入框允许输入的最大长度，默认15个字符
-     * colors: string[], 字体颜色值，默认值见下面colors
+     * fontColors: string[], 字体颜色值，默认值见下面fontColors
      * fontSizes: number[], 字体大小，默认值见下面fontSizes
      */
     var defaultOption = {
-            showInputType: 'dbclick',
+            showInputType: 'dblclick',
             backgroudColor: 'rgba(75, 53, 76, 0.8)',
             inputLength: 30,
-            colors: fontColors,
+            fontColors: fontColors,
             fontSizes: fontSizes
         },
         //-允许的参数类型-
@@ -36,7 +36,7 @@
 
     //-格式化writeHere容器-
     var formatContainer = function(self) {
-        self.css('position') === 'static' && self.css('position', 'relative');
+        self.css('position') === 'static' && self.css({'position': 'relative', 'scroll-x': 'auto'});
         self.attr(containerAttr, true);
     };
 
@@ -45,7 +45,7 @@
         if($('#writeHere_style').length === 0) {
             var $style = $('<style/>')
                 .attr('id', 'writeHere_style')
-                .html(styleArray.join('\n'));
+                .html(cssArray.join('\n'));
             $('head').append($style);
         }
     };
@@ -67,17 +67,27 @@
                 '</li>',
                 '<li>',
                     '<a href="javascript:void(0);">大小</a>',
-            function() {
-                var fontSizesHtml = '<nav class="select-menu">';
-                for(var i in option.fontSizes) {
-                    fontSizesHtml += '<a href="javascript:void(0);">' + option.fontSizes[i] + '</a>';
-                }
-                fontSizesHtml += '</nav>';
-                return fontSizesHtml;
-            }(),
+                    function() {
+                        var fontSizesHtml = '<nav class="select-menu">',
+                            _fontSizes = option.fontSizes.length > 0 ? option.fontSizes : fontSizes;
+                        for(var i = 0; i < _fontSizes.length; i++) {
+                            fontSizesHtml += '<a href="javascript:void(0);">' + _fontSizes[i] + '</a>';
+                        }
+                        fontSizesHtml += '</nav>';
+                        return fontSizesHtml;
+                    }(),
                 '</li>',
                 '<li>',
                     '<a href="javascript:void(0);">颜色</a>',
+                    function() {
+                        var fontColorsHtml = '<nav class="color-select-menu">',
+                            _fontColors = option.fontColors.length > 0 ? option.fontColors : fontColors;
+                        for(var i = 0; i < _fontColors.length; i++) {
+                            fontColorsHtml += '<a href="javascript:void(0);" style="background-color: ' + _fontColors[i] + '"></a>';
+                        }
+                        fontColorsHtml += '</nav>';
+                        return fontColorsHtml;
+                    }(),
                 '</li>',
                 '<li>',
                     '<a href="javascript:void(0);">粗体</a>',
@@ -92,13 +102,59 @@
     //-初始化插件-
     var init = function(self, option) {
         var _option = $.extend(true, {}, defaultOption, option);
+
+        addStyle();
         formatContainer(self);
 
+        var containerLeft = self.offset().left,
+            containerTop = self.offset().top,
+            $input = $([
+                '<div class="write-here">',
+                    getEditTool(_option),
+                    '<input class="write-here-input" style="background: ' + _option.backgroudColor + '" type="text" maxlength="' + _option.inputLength + '"/>',
+                    '<span class="write-here-cancel">&times;</span>',
+                '</div>'
+            ].join('\n')),
+            showInput = function(e) {
+                var left = e.pageX - containerLeft - 8,
+                    top = e.pageY - containerTop - 15,
+                    cloneInput = $input.clone(true);
+                cloneInput.css({
+                    top: top,
+                    left: left
+                });
+                self.append(cloneInput);
+                cloneInput.children('input').focus();
+            };
+
+        $input.children('.write-here-cancel').click(function() {
+            var writeHere = $(this).closest('.write-here');
+            writeHere.remove();
+        });
+
+        _option.showInputType === 'dblclick' ? self.on('dblclick', showInput) : self.rightclick(showInput);
     };
 
     //-撤销wrtieHere-
     var destroy = function(self) {
         if(!self.attr(containerAttr)) return false;
+    };
+
+    //-添加右击事件绑定-
+    $.fn.rightclick = function(callback) {
+        if($.isFunction(callback)) {
+            $(document).on('contextmenu', function() {
+                return false;
+            });
+            $.isFunction(callback) && $(this).on('mousedown', function(e) {
+                if(3 === e.which) {
+                    callback();
+                }
+            });
+        } else if(callback === 'off') {
+            $(document).off('contextmenu');
+            $(this).off('mousedown');
+        }
     };
 
     $.fn.writeHere = function(option) {
@@ -121,16 +177,18 @@
         return jQuery;
     }(),
     [
-        '.write-here { position: absolute; z-index: 99; display: inline-block; background: transparent; }',
-        '.write-here-input, .write-here-tool, .write-here-tool .select-menu { -webkit-box-shadow: 0 0 5px #000; -moz-box-shadow: 0 0 5px #000; box-shadow: 0 0 5px #000; }',
+        '.write-here { position: absolute; z-index: 1; display: inline-block; background: transparent; }',
         '.write-here-input { padding: 8px; width: 240px; border: none; outline: none; }',
-        '.write-here-tool { position: absolute; top: -32px; list-style: none; margin: 0; padding: 4px 6px; }',
-        '.write-here-tool:after { content: ""; position: absolute; bottom: -10px; left: 0; width: 0; height: 0; border: 5px solid transparent; }',
+        '.write-here-cancel { position: absolute; top: -9px; right: -9px; display: inline-block; width: 18px; height: 18px; font-size: 14px; color: #fff; line-height: 18px; text-align: center; background-color: #4B354C; border-radius: 50%; cursor: pointer; }',
+        '.write-here-tool { position: absolute; top: -32px; list-style: none; margin: 0; padding: 2px 6px 4px; background-color: #4B354C; -webkit-box-shadow: 0 -1px 0 #e45164; -moz-box-shadow: 0 -1px 0 #e45164; box-shadow: 0 -1px 0 #e45164; }',
+        '.write-here-tool:after { content: ""; position: absolute; bottom: -10px; left: 0; width: 0; height: 0; border: 5px solid transparent; border-top-color: #4B354C; }',
         '.write-here-tool li { position: relative; float: left; }',
-        '.write-here-tool li.drop-down:after { content: ""; position: absolute; bottom: -10px; left: 12px; width: 0; height: 0; border: 5px solid transparent; }',
+        '.write-here-tool li.drop-down:after { content: ""; position: absolute; bottom: -10px; left: 12px; width: 0; height: 0; border: 5px solid transparent; border-bottom-color: #4B354C; }',
         '.write-here-tool li > a { padding: 0 5px; font-size: 12px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
-        '.write-here-tool .select-menu { position: absolute; top: 26px; left: -8px; overflow-y: auto; padding: 3px 0; width: 50px; height: 70px; }',
-        '.write-here-tool .select-menu > a { display: block; box-sizing: border-box; padding: 0 5px; width: 100%; font-size: 10px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
+        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 26px; left: -8px; display: none; overflow-y: auto; padding: 3px 0; width: 50px; height: 70px; background-color: #4B354C; -webkit-box-shadow: 0 1px 0 #e45164; -moz-box-shadow: 0 1px 0 #e45164; box-shadow: 0 1px 0 #e45164; }',
+        '.write-here-tool li.drop-down > .select-menu, .write-here-tool li.drop-down > .color-select-menu { display: block; }',
+        '.write-here-tool .select-menu > a, .write-here-tool .color-select-menu > a { display: block; box-sizing: border-box; padding: 0 5px; width: 100%; font-size: 10px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
+        '.write-here-tool .color-select-menu > a { height: 10px; }',
         '.write-here-tool .select-menu > a:hover { background-color: #4B354C; }',
         '.write-here-tool li > a.active, .write-here-tool li > a:focus, .write-here-tool .select-menu > a.active, .write-here-tool .select-menu > a:focus { color: #e45164; text-decoration: none; }'
     ],

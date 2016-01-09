@@ -4,6 +4,7 @@ body {
 header {
     position: absolute;
     top: 0;
+    z-index: 99;
     padding: 12px 0;
     width: 100%;
     text-align: center;
