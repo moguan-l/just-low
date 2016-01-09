@@ -179,7 +179,7 @@
     };
 
 }(function() {
-        if(!jQuery) throw new Error('Plugin needs jQuery');
+        if(typeof jQuery === 'undefined') throw new Error('Plugin needs jQuery');
         return jQuery;
     }(),
     [
