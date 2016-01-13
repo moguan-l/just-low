@@ -1,6 +1,10 @@
 body {
     background-color: #372c3c;
 }
+@font-face {
+    font-family: guaiguai;
+    src: url("../fonts/guaiguai.ttf");
+}
 header {
     position: absolute;
     top: 0;

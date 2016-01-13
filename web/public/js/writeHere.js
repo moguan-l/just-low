@@ -10,21 +10,20 @@
      ************************************************************************************
      * showInputType: string, 调出输入框的方式，双击('dblclick')或者右击('rightclick')，默认双击
      * backgroudColor: string, 输入框以及编辑菜单背景颜色
+     * needBg: boolean, 回车之后的文字是否需要背景，默认不需要
      * inputLength: number, 输入框允许输入的最大长度，默认15个字符
      * fontColors: string[], 字体颜色值，默认值见下面fontColors
      * fontSizes: number[], 字体大小，默认值见下面fontSizes
-     * multiplyInput: boolean, 容器中是否可出现多个输入框，默认不可以，只有一个
-     * dragable: boolean, 输入框是否可拖拽，默认不可以
-     * inputCallback: function, 输入结束回车之后的回调函数，默认为空
+     * inputCallback: function, 输入结束回车之后的回调函数，默认为空，回调函数返回的参数为输入框内容及文字样式（字符串）
      */
     var defaultOption = {
             showInputType: 'dblclick',
             backgroudColor: 'rgba(75, 53, 76, 0.8)',
+            needBg: false,
             inputLength: 30,
             fontColors: fontColors,
             fontSizes: fontSizes,
-            multiplyInput: false,
-            dragable: false,
+            fontFamilies: fontFamilies,
             inputCallback: null
         },
         //-允许的参数类型-
@@ -61,45 +60,46 @@
         return [
             '<ul class="write-here-tool">',
                 '<li>',
-                    '<a href="javascript:void(0);">字体</a>',
+                    '<a class="writeHere-tool-drop-btn" href="javascript:void(0);">字体</a>',
                     function() {
-                        var fontFamiliesHtml = '<nav class="select-menu">';
+                        var fontFamiliesHtml = '<nav class="select-menu">',
+                            _fontFamilies = option.fontFamilies.length > 0 ? option.fontFamilies : fontFamilies;
                         for(var i in fontFamilies) {
-                            fontFamiliesHtml += '<a href="javascript:void(0);" data-fontFamily="' + fontFamilies[i] + '">' + i + '</a>';
+                            fontFamiliesHtml += '<a href="javascript:void(0);" class="fontFamily" data-fontFamily="' + _fontFamilies[i] + '">' + _fontFamilies[i] + '</a>';
                         }
                         fontFamiliesHtml += '</nav>';
                         return fontFamiliesHtml;
                     }(),
                 '</li>',
                 '<li>',
-                    '<a href="javascript:void(0);">大小</a>',
+                    '<a class="writeHere-tool-drop-btn" href="javascript:void(0);">大小</a>',
                     function() {
                         var fontSizesHtml = '<nav class="select-menu">',
                             _fontSizes = option.fontSizes.length > 0 ? option.fontSizes : fontSizes;
                         for(var i = 0; i < _fontSizes.length; i++) {
-                            fontSizesHtml += '<a href="javascript:void(0);" data-fontSize="' + _fontSizes[i] + '">' + _fontSizes[i] + 'px</a>';
+                            fontSizesHtml += '<a href="javascript:void(0);" class="fontSize" data-fontSize="' + _fontSizes[i] + '">' + _fontSizes[i] + 'px</a>';
                         }
                         fontSizesHtml += '</nav>';
                         return fontSizesHtml;
                     }(),
                 '</li>',
                 '<li>',
-                    '<a href="javascript:void(0);">颜色</a>',
+                    '<a class="writeHere-tool-drop-btn" href="javascript:void(0);">颜色</a>',
                     function() {
                         var fontColorsHtml = '<nav class="color-select-menu">',
                             _fontColors = option.fontColors.length > 0 ? option.fontColors : fontColors;
                         for(var i = 0; i < _fontColors.length; i++) {
-                            fontColorsHtml += '<a href="javascript:void(0);" style="background-color: ' + _fontColors[i] + '"></a>';
+                            fontColorsHtml += '<a href="javascript:void(0);" class="fontColor" data-fontColor="' + _fontColors[i] + '" style="background-color: ' + _fontColors[i] + '"></a>';
                         }
                         fontColorsHtml += '</nav>';
                         return fontColorsHtml;
                     }(),
                 '</li>',
                 '<li>',
-                    '<a href="javascript:void(0);">粗体</a>',
+                    '<a class="writeHere-tool-btn bold" href="javascript:void(0);">粗体</a>',
                 '</li>',
                 '<li>',
-                    '<a href="javascript:void(0);">倾斜</a>',
+                    '<a class="writeHere-tool-btn italic" href="javascript:void(0);">倾斜</a>',
                 '</li>',
             '</ul>'
         ].join('\n');
@@ -119,9 +119,11 @@
                     getEditTool(_option),
                     '<input class="write-here-input" style="background: ' + _option.backgroudColor + '" type="text" maxlength="' + _option.inputLength + '"/>',
                     '<span class="write-here-cancel">&times;</span>',
+                    '<span class="write-here-ok">&crarr;</span>',
                 '</div>'
             ].join('\n')),
             showInput = function(e) {
+                if($(e.target).parents('.write-here').length > 0) return false;
                 var left = e.pageX - containerLeft - 8,
                     top = e.pageY - containerTop - 15,
                     cloneInput = $input.clone(true);
@@ -129,13 +131,107 @@
                     top: top,
                     left: left
                 });
+                cloneInput.attr('data-top', top);
+                cloneInput.attr('data-left', left);
                 self.append(cloneInput);
                 cloneInput.children('input').focus();
+            },
+            endInput = function() {
+                var _this = $(this),
+                    writeHere = _this.parent(),
+                    input = writeHere.children('input'),
+                    value = input.val();
+                if(!value) {
+                    writeHere.remove();
+                    return false;
+                }
+
+                var top = writeHere.attr('data-top'),
+                    left = writeHere.attr('data-left'),
+                    style = input.attr('style');
+                var $span = $('<span class="writeHere-span"/>').text(value).attr('style', style);
+                $span.css({
+                    position: 'absolute',
+                    top: top + 'px',
+                    left: left + 'px',
+                    padding: '8px'
+                });
+                !_option.needBg && $span.css('background', 'transparent');
+                writeHere.remove();
+                self.append($span);
+                $.isFunction(_option.inputCallback) && _option.inputCallback(value, $span.attr('style'));
             };
 
+        //-绑定关闭事件-
         $input.children('.write-here-cancel').click(function() {
-            var writeHere = $(this).closest('.write-here');
+            var writeHere = $(this).parent();
             writeHere.remove();
+        });
+        //-绑定确定事件-
+        $input.children('.write-here-ok').click(endInput);
+        //-绑定input聚焦事件-
+        $input.children('input').on('focus', function() {
+            $(this).prev().children().removeClass('drop-down');
+        });
+        //-绑定input回车事件-
+        $input.children('input').on('keydown', function(e) {
+            if(e.keyCode === 13 || e.keyCode === 108) {
+                endInput.call(this);
+            }
+        });
+        //-绑定下拉菜单事件-
+        $input.find('.writeHere-tool-drop-btn').click(function() {
+            var _parent = $(this).parent();
+            if(_parent.hasClass('drop-down')) {
+                _parent.removeClass('drop-down');
+            } else {
+                _parent.siblings().removeClass('drop-down');
+                _parent.addClass('drop-down');
+            }
+        });
+        //-绑定选择字体，大小，颜色事件-
+        $input.find('nav > a').click(function() {
+            var _this = $(this);
+            if(_this.hasClass('active')) return false;
+
+            _this.siblings().removeClass('active');
+            _this.addClass('active');
+
+            var input = _this.closest('.write-here').children('input');
+            switch(true) {
+                case _this.hasClass('fontFamily'):
+                    var fontFamily = _this.attr('data-fontFamily');
+                    _this.parent().prev().css('font-family', fontFamily);
+                    input.css('font-family', fontFamily);
+                    break;
+                case _this.hasClass('fontSize'):
+                    var fontSize = _this.attr('data-fontSize') + 'px';
+                    _this.parent().prev().text(fontSize);
+                    input.css('font-size', fontSize);
+                    break;
+                case _this.hasClass('fontColor'):
+                    var fontColor = _this.attr('data-fontColor');
+                    _this.parent().prev().css('color', fontColor);
+                    input.css('color', fontColor);
+                    break;
+                default: break;
+            }
+            _this.closest('li').removeClass('drop-down');
+        });
+        //-绑定粗体，倾斜事件-
+        $input.find('.writeHere-tool-btn').click(function() {
+            var _this = $(this),
+                input = _this.closest('.write-here').children('input');
+            _this.toggleClass('active');
+            var active = _this.hasClass('active');
+
+            if(_this.hasClass('bold')) {
+                active ? input.css('font-weight', 'bold') :
+                    input.css('font-weight', 'normal');
+            } else {
+                active ? input.css('font-style', 'italic') :
+                    input.css('font-style', 'normal');
+            }
         });
 
         _option.showInputType === 'dblclick' ? self.on('dblclick', showInput) : self.rightclick(showInput);
@@ -185,31 +281,22 @@
     [
         '.write-here { position: absolute; z-index: 1; display: inline-block; background: transparent; }',
         '.write-here-input { padding: 8px; width: 240px; border: none; outline: none; }',
-        '.write-here-cancel { position: absolute; top: -9px; right: -9px; display: inline-block; width: 18px; height: 18px; font-size: 14px; color: #fff; line-height: 18px; text-align: center; background-color: #4B354C; border-radius: 50%; cursor: pointer; }',
+        '.write-here-cancel, .write-here-ok { position: absolute; display: inline-block; width: 18px; height: 18px; font-size: 16px; color: #999; line-height: 18px; text-align: center; background-color: #4B354C; border-radius: 50%; cursor: pointer; }',
+        '.write-here-cancel { top: -9px; right: -9px; }',
+        '.write-here-ok { bottom: -9px; right: -9px; font-size: 12px; }',
+        '.write-here-cancel:hover, .write-here-ok:hover { color: #fff; }',
         '.write-here-tool { position: absolute; top: -32px; list-style: none; margin: 0; padding: 2px 6px 4px; background-color: #4B354C; -webkit-box-shadow: 0 -1px 0 #e45164; -moz-box-shadow: 0 -1px 0 #e45164; box-shadow: 0 -1px 0 #e45164; }',
         '.write-here-tool:after { content: ""; position: absolute; bottom: -10px; left: 0; width: 0; height: 0; border: 5px solid transparent; border-top-color: #4B354C; }',
         '.write-here-tool li { position: relative; float: left; }',
         '.write-here-tool li.drop-down:after { content: ""; position: absolute; bottom: -10px; left: 12px; width: 0; height: 0; border: 5px solid transparent; border-bottom-color: #4B354C; }',
         '.write-here-tool li > a { padding: 0 5px; font-size: 12px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
-        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 26px; left: -8px; display: none; overflow-y: auto; padding: 3px 0; width: 50px; height: 70px; background-color: #4B354C; -webkit-box-shadow: 0 1px 0 #e45164; -moz-box-shadow: 0 1px 0 #e45164; box-shadow: 0 1px 0 #e45164; }',
+        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 26px; left: -13px; display: none; overflow-y: auto; padding: 3px 0; width: 60px; height: 70px; background-color: #4B354C; -webkit-box-shadow: 0 1px 0 #e45164; -moz-box-shadow: 0 1px 0 #e45164; box-shadow: 0 1px 0 #e45164; }',
         '.write-here-tool li.drop-down > .select-menu, .write-here-tool li.drop-down > .color-select-menu { display: block; }',
-        '.write-here-tool .select-menu > a, .write-here-tool .color-select-menu > a { display: block; box-sizing: border-box; padding: 0 5px; width: 100%; font-size: 10px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
+        '.write-here-tool .select-menu > a, .write-here-tool .color-select-menu > a { display: block; box-sizing: border-box; overflow: hidden; padding: 1px 5px; width: 100%; font-size: 10px; color: #fff; text-decoration: none; vertical-align: middle; text-overflow: ellipsis; white-space: nowrap; outline: none; }',
         '.write-here-tool .color-select-menu > a { height: 10px; }',
-        '.write-here-tool .select-menu > a:hover { background-color: #4B354C; }',
-        '.write-here-tool li > a.active, .write-here-tool li > a:focus, .write-here-tool .select-menu > a.active, .write-here-tool .select-menu > a:focus { color: #e45164; text-decoration: none; }'
+        '.write-here-tool li.drop-down > a, .write-here-tool .select-menu > a.active, .write-here-tool .select-menu > a:hover, .writeHere-tool-btn.active { color: #e45164; text-decoration: none; }'
     ],
     ['#333333', '#66cffe', '#00d334', '#ff9404', '#fa636a', '#959595'],
     [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32],
-    {
-        '宋体': 'SimSun',
-        '黑体': 'SimHei',
-        '微软雅黑': 'Microsoft YaHei',
-        '微软正黑体': 'Microsoft JhengHei',
-        '新宋体': 'NSimSun',
-        '新细明体': 'PMingLiU',
-        '细明体': 'MingLiU',
-        '标楷体': 'DFKai-SB',
-        '仿宋': 'FangSong',
-        '楷体': 'KaiTi'
-    }
+    ['微软雅黑']
 );
