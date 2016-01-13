@@ -12,15 +12,17 @@ block js
 block content
     include ../widget/header
 
-    div.page-container(ng-controller='testctrl')
-        ul.user-list.flex.text-center.text-unused(ng-hide='true')
-            li.flex-1(ng-repeat='person in personList') {{ person.name }}
+    div.page-container(ng-controller='pagectrl')
 
     script(type='text/javascript').
         JustLow
-                .controller('testctrl', function($scope, userList) {
-                    $scope.personList = userList.query();
+                .controller('pagectrl', function($scope, inputArray) {
+                    $scope.inputArray = inputArray.query();
+                    $('.page-container').writeHere({
+                        fontFamilies: ['guaiguai'],
+                        inputCallback: function(value, style) {
+                            console.log(value);
+                            console.log(style);
+                        }
+                    });
                 });
-        $('.page-container').writeHere({
-            fontFamilies: ['guaiguai']
-        });

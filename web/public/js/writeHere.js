@@ -7,7 +7,7 @@
     'use strict';
     /**
      * defaultOption, 默认参数
-     ************************************************************************************
+     *****************************************************************************************************
      * showInputType: string, 调出输入框的方式，双击('dblclick')或者右击('rightclick')，默认双击
      * backgroudColor: string, 输入框以及编辑菜单背景颜色
      * needBg: boolean, 回车之后的文字是否需要背景，默认不需要
@@ -259,6 +259,7 @@
         }
     };
 
+    //-插件入口-
     $.fn.writeHere = function(option) {
         if(optionType.indexOf(otype(option)) === -1)
             throw new Error('parameter is error');
