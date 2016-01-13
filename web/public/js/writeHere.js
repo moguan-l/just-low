@@ -3,7 +3,7 @@
  * Created by liqingjie on 16/1/7.
  * 依赖jQuery
  */
-!function($, cssArray, fontColors, fontSizes, fontFamilies) {
+;!function($, cssArray, fontColors, fontSizes, fontFamilies) {
     'use strict';
     /**
      * defaultOption, 默认参数
@@ -114,7 +114,7 @@
 
         var containerLeft = self.offset().left,
             containerTop = self.offset().top,
-            $input = $([
+            $writeHere = $([
                 '<div class="write-here">',
                     getEditTool(_option),
                     '<input class="write-here-input" style="background: ' + _option.backgroudColor + '" type="text" maxlength="' + _option.inputLength + '"/>',
@@ -126,15 +126,15 @@
                 if($(e.target).parents('.write-here').length > 0) return false;
                 var left = e.pageX - containerLeft - 8,
                     top = e.pageY - containerTop - 15,
-                    cloneInput = $input.clone(true);
-                cloneInput.css({
+                    clonewriteHere = $writeHere.clone(true);
+                clonewriteHere.css({
                     top: top,
                     left: left
                 });
-                cloneInput.attr('data-top', top);
-                cloneInput.attr('data-left', left);
-                self.append(cloneInput);
-                cloneInput.children('input').focus();
+                clonewriteHere.attr('data-top', top);
+                clonewriteHere.attr('data-left', left);
+                self.append(clonewriteHere);
+                clonewriteHere.children('input').focus();
             },
             endInput = function() {
                 var _this = $(this),
@@ -163,24 +163,24 @@
             };
 
         //-绑定关闭事件-
-        $input.children('.write-here-cancel').click(function() {
+        $writeHere.children('.write-here-cancel').click(function() {
             var writeHere = $(this).parent();
             writeHere.remove();
         });
         //-绑定确定事件-
-        $input.children('.write-here-ok').click(endInput);
+        $writeHere.children('.write-here-ok').click(endInput);
         //-绑定input聚焦事件-
-        $input.children('input').on('focus', function() {
+        $writeHere.children('input').on('focus', function() {
             $(this).prev().children().removeClass('drop-down');
         });
         //-绑定input回车事件-
-        $input.children('input').on('keydown', function(e) {
+        $writeHere.children('input').on('keydown', function(e) {
             if(e.keyCode === 13 || e.keyCode === 108) {
                 endInput.call(this);
             }
         });
         //-绑定下拉菜单事件-
-        $input.find('.writeHere-tool-drop-btn').click(function() {
+        $writeHere.find('.writeHere-tool-drop-btn').click(function() {
             var _parent = $(this).parent();
             if(_parent.hasClass('drop-down')) {
                 _parent.removeClass('drop-down');
@@ -190,7 +190,7 @@
             }
         });
         //-绑定选择字体，大小，颜色事件-
-        $input.find('nav > a').click(function() {
+        $writeHere.find('nav > a').click(function() {
             var _this = $(this);
             if(_this.hasClass('active')) return false;
 
@@ -219,7 +219,7 @@
             _this.closest('li').removeClass('drop-down');
         });
         //-绑定粗体，倾斜事件-
-        $input.find('.writeHere-tool-btn').click(function() {
+        $writeHere.find('.writeHere-tool-btn').click(function() {
             var _this = $(this),
                 input = _this.closest('.write-here').children('input');
             _this.toggleClass('active');
