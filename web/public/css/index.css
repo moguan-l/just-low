@@ -1,6 +1,3 @@
-body {
-    background-color: #372c3c;
-}
 @font-face {
     font-family: guaiguai;
     src: url("../fonts/guaiguai.ttf");
@@ -22,7 +19,7 @@ header {
 header.fixed {
     position: fixed;
     top: -94px;
-    background: #4b354c;
+    background: rgba(75, 53, 76, 0.9);
 }
 header >  span {
     font-size: 38px;
