@@ -21,10 +21,20 @@ header.fixed {
     top: -94px;
     background: rgba(75, 53, 76, 0.9);
 }
+header >  span, header .header-menu a {
+    -webkit-transition: color .3s;
+    -moz-transition: color .3s;
+    -ms-transition: color .3s;
+    -o-transition: color .3s;
+    transition: color .3s;
+}
 header >  span {
     font-size: 38px;
     color: #ac3644;
     font-weight: bolder;
+}
+header.fixed > span, header.fixed .header-menu a {
+    color: #eee;
 }
 header .logo {
     display: block;
@@ -34,12 +44,12 @@ header .logo {
 header .header-menu {
     padding: 64px 45px 0;
 }
-.header-menu a {
+header .header-menu a {
     padding: 8px 20px;
     font-size: 16px;
     color: #e45164;
 }
-.header-menu a:hover {
+header .header-menu a:hover {
     color: #ac3644;
 }
 .page-container {
