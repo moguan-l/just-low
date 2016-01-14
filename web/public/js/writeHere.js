@@ -64,7 +64,7 @@
                     function() {
                         var fontFamiliesHtml = '<nav class="select-menu">',
                             _fontFamilies = option.fontFamilies.length > 0 ? option.fontFamilies : fontFamilies;
-                        for(var i in fontFamilies) {
+                        for(var i = 0; i < _fontFamilies.length; i++) {
                             fontFamiliesHtml += '<a href="javascript:void(0);" class="fontFamily" data-fontFamily="' + _fontFamilies[i] + '">' + _fontFamilies[i] + '</a>';
                         }
                         fontFamiliesHtml += '</nav>';
@@ -125,16 +125,20 @@
             showInput = function(e) {
                 if($(e.target).parents('.write-here').length > 0) return false;
                 var left = e.pageX - containerLeft - 8,
-                    top = e.pageY - containerTop - 15,
-                    clonewriteHere = $writeHere.clone(true);
-                clonewriteHere.css({
+                    top = e.pageY - containerTop - 15;
+                $writeHere.css({
                     top: top,
                     left: left
                 });
-                clonewriteHere.attr('data-top', top);
-                clonewriteHere.attr('data-left', left);
-                self.append(clonewriteHere);
-                clonewriteHere.children('input').focus();
+                $writeHere.attr('data-top', top);
+                $writeHere.attr('data-left', left);
+
+                if(self.children('.write-here').length === 0) {
+                    self.prepend($writeHere);
+                } else {
+                    $writeHere.show();
+                }
+                $writeHere.children('input').val('').focus();
             },
             endInput = function() {
                 var _this = $(this),
@@ -142,7 +146,7 @@
                     input = writeHere.children('input'),
                     value = input.val();
                 if(!value) {
-                    writeHere.remove();
+                    writeHere.hide();
                     return false;
                 }
 
@@ -157,7 +161,7 @@
                     padding: '8px'
                 });
                 !_option.needBg && $span.css('background', 'transparent');
-                writeHere.remove();
+                writeHere.hide();
                 self.append($span);
                 $.isFunction(_option.inputCallback) && _option.inputCallback(value, $span.attr('style'));
             };
@@ -165,7 +169,7 @@
         //-绑定关闭事件-
         $writeHere.children('.write-here-cancel').click(function() {
             var writeHere = $(this).parent();
-            writeHere.remove();
+            writeHere.hide();
         });
         //-绑定确定事件-
         $writeHere.children('.write-here-ok').click(endInput);
