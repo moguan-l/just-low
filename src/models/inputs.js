@@ -3,6 +3,6 @@
  */
 var mongoose = require('mongoose');
 var input_schema = require('../schemas/inputs');
-var inputs = mongoose.model('jl_users', input_schema);
+var inputs = mongoose.model('jl_inputs', input_schema);
 
 module.exports = inputs;

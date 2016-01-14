@@ -29,4 +29,14 @@ router.get('/inputs/search', function(req, res) {
     });
 });
 
+//-文字墙添加文字-
+router.post('/inputs/add', function(req, res) {
+    var inputs = require('../services/inputs');
+    inputs.addInput(req.query, function(err) {
+        res.json({
+            ok: err ? false : true
+        });
+    });
+});
+
 module.exports = router;

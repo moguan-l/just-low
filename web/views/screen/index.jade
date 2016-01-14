@@ -13,16 +13,24 @@ block content
     include ../widget/header
 
     div.page-container(ng-controller='pagectrl')
+        span(ng-repeat='input in inputArray', style='{{input.style}}') {{input.text}}
 
     script(type='text/javascript').
         JustLow
-                .controller('pagectrl', function($scope, inputArray) {
+                .controller('pagectrl', function($scope, inputArray, addInput) {
                     $scope.inputArray = inputArray.query();
+
                     $('.page-container').writeHere({
                         fontFamilies: ['guaiguai'],
                         inputCallback: function(value, style) {
-                            console.log(value);
-                            console.log(style);
+                            var create_time = new Date().getTime();
+                            addInput.save({
+                                text: value,
+                                style: style,
+                                create_time: create_time
+                            }, function(res) {
+                                console.log(res);
+                            });
                         }
                     });
                 });

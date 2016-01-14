@@ -8,4 +8,9 @@ var _getInputs = function(callback) {
         .exec(typeof callback == 'function' ? callback : null);
 };
 
+var _addInput = function(data, callback) {
+    inputs.create(data, callback);
+};
+
 exports.getInputs = _getInputs;
+exports.addInput = _addInput;
