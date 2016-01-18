@@ -10,23 +10,16 @@ header {
     width: 100%;
     text-align: center;
     background: transparent;
-    -webkit-transition: background .3s;
-    -moz-transition: background .3s;
-    -ms-transition: background .3s;
-    -o-transition: background .3s;
-    transition: background .3s;
+    -webkit-transition: background .5s;
+    -moz-transition: background .5s;
+    -ms-transition: background .5s;
+    -o-transition: background .5s;
+    transition: background .5s;
 }
 header.fixed {
     position: fixed;
     top: -94px;
-    background: rgba(75, 53, 76, 0.9);
-}
-header >  span, header .header-menu a {
-    -webkit-transition: color .3s;
-    -moz-transition: color .3s;
-    -ms-transition: color .3s;
-    -o-transition: color .3s;
-    transition: color .3s;
+    background: rgba(231, 97, 106, 0.9);
 }
 header >  span {
     font-size: 38px;

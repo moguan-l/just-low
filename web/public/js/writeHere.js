@@ -11,19 +11,24 @@
      * showInputType: string, 调出输入框的方式，双击('dblclick')或者右击('rightclick')，默认双击
      * backgroudColor: string, 输入框以及编辑菜单背景颜色
      * needBg: boolean, 回车之后的文字是否需要背景，默认不需要
+     * menuBgColor: string, 菜单栏背景颜色，默认menuBgColor
      * inputLength: number, 输入框允许输入的最大长度，默认15个字符
      * fontColors: string[], 字体颜色值，默认值见下面fontColors
      * fontSizes: number[], 字体大小，默认值见下面fontSizes
+     * fontFamilies: string[], 字体，默认值见下面fontFamilies
+     * editable: boolean, 已经写好的字是否可编辑，默认不能
      * inputCallback: function, 输入结束回车之后的回调函数，默认为空，回调函数返回的参数为输入框内容及文字样式（字符串）
      */
     var defaultOption = {
             showInputType: 'dblclick',
             backgroudColor: 'rgba(75, 53, 76, 0.8)',
             needBg: false,
+            menuBgColor: 'menuBgColor',
             inputLength: 30,
             fontColors: fontColors,
             fontSizes: fontSizes,
             fontFamilies: fontFamilies,
+            editable: false,
             inputCallback: null
         },
         //-允许的参数类型-
@@ -46,13 +51,13 @@
     };
 
     //-添加插件所需的样式-
-    var addStyle = function() {
-        if($('#writeHere_style').length === 0) {
-            var $style = $('<style/>')
-                .attr('id', 'writeHere_style')
-                .html(cssArray.join('\n'));
-            $('head').append($style);
-        }
+    var addStyle = function(menuBgColor) {
+        $('#writeHere_style').remove();
+        var cssString = cssArray.join('\n').replace(/menuBgColor/g, menuBgColor),
+            $style = $('<style/>')
+            .attr('id', 'writeHere_style')
+            .html(cssString);
+        $('head').append($style);
     };
 
     //-根据参数组织编辑菜单-
@@ -109,7 +114,7 @@
     var init = function(self, option) {
         var _option = $.extend(true, {}, defaultOption, option);
 
-        addStyle();
+        addStyle(_option.menuBgColor);
         formatContainer(self);
 
         var containerLeft = self.offset().left,
@@ -285,21 +290,20 @@
     }(),
     [
         '.write-here { position: absolute; z-index: 1; display: inline-block; background: transparent; }',
-        '.write-here-input { padding: 8px; width: 240px; border: none; outline: none; }',
-        '.write-here-cancel, .write-here-ok { position: absolute; display: inline-block; width: 18px; height: 18px; font-size: 16px; color: #999; line-height: 18px; text-align: center; background-color: #4B354C; border-radius: 50%; cursor: pointer; }',
-        '.write-here-cancel { top: -9px; right: -9px; }',
-        '.write-here-ok { bottom: -9px; right: -9px; font-size: 12px; }',
-        '.write-here-cancel:hover, .write-here-ok:hover { color: #fff; }',
-        '.write-here-tool { position: absolute; top: -32px; list-style: none; margin: 0; padding: 2px 6px 4px; background-color: #4B354C; -webkit-box-shadow: 0 -1px 0 #e45164; -moz-box-shadow: 0 -1px 0 #e45164; box-shadow: 0 -1px 0 #e45164; }',
-        '.write-here-tool:after { content: ""; position: absolute; bottom: -10px; left: 0; width: 0; height: 0; border: 5px solid transparent; border-top-color: #4B354C; }',
+        '.write-here-input { padding: 8px 24px 8px 8px; width: 240px; border: none; outline: none; }',
+        '.write-here-cancel, .write-here-ok { position: absolute; z-index: 1; display: inline-block; width: 16px; height: 16px; font-size: 16px; color: #fff; line-height: 18px; text-align: center; background-color: menuBgColor; cursor: pointer; }',
+        '.write-here-cancel { top: 0; right: 0; }',
+        '.write-here-ok { bottom: 0; right: 0; font-size: 12px; }',
+        '.write-here-tool { position: absolute; top: -32px; list-style: none; margin: 0; padding: 2px 6px 4px; background-color: menuBgColor; }',
+        '.write-here-tool:after { content: ""; position: absolute; bottom: -10px; left: 0; width: 0; height: 0; border: 5px solid transparent; border-top-color: menuBgColor; }',
         '.write-here-tool li { position: relative; float: left; }',
-        '.write-here-tool li.drop-down:after { content: ""; position: absolute; bottom: -10px; left: 12px; width: 0; height: 0; border: 5px solid transparent; border-bottom-color: #4B354C; }',
+        '.write-here-tool li.drop-down:after { content: ""; position: absolute; bottom: -10px; left: 12px; width: 0; height: 0; border: 5px solid transparent; border-bottom-color: menuBgColor; }',
         '.write-here-tool li > a { padding: 0 5px; font-size: 12px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
-        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 26px; left: -13px; display: none; overflow-y: auto; padding: 3px 0; width: 60px; height: 70px; background-color: #4B354C; -webkit-box-shadow: 0 1px 0 #e45164; -moz-box-shadow: 0 1px 0 #e45164; box-shadow: 0 1px 0 #e45164; }',
+        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 26px; left: -13px; display: none; overflow-y: auto; padding: 3px 0; width: 60px; height: 70px; background-color: menuBgColor; }',
         '.write-here-tool li.drop-down > .select-menu, .write-here-tool li.drop-down > .color-select-menu { display: block; }',
-        '.write-here-tool .select-menu > a, .write-here-tool .color-select-menu > a { display: block; box-sizing: border-box; overflow: hidden; padding: 1px 5px; width: 100%; font-size: 10px; color: #fff; text-decoration: none; vertical-align: middle; text-overflow: ellipsis; white-space: nowrap; outline: none; }',
+        '.write-here-tool .select-menu > a, .write-here-tool .color-select-menu > a { display: block; box-sizing: border-box; overflow: hidden; padding: 1px 5px; width: 100%; font-size: 10px; color: #fff; text-decoration: none; vertical-align: middle; text-overflow: ellipsis; white-space: nowrap; outline: none; cursor: pointer; }',
         '.write-here-tool .color-select-menu > a { height: 10px; }',
-        '.write-here-tool li.drop-down > a, .write-here-tool .select-menu > a.active, .write-here-tool .select-menu > a:hover, .writeHere-tool-btn.active { color: #e45164; text-decoration: none; }'
+        '.write-here-tool li.drop-down > a, .write-here-tool .select-menu > a.active, .writeHere-tool-btn.active { color: #e45164; text-decoration: none; }'
     ],
     ['#333333', '#66cffe', '#00d334', '#ff9404', '#fa636a', '#959595'],
     [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32],
