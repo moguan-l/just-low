@@ -155,46 +155,71 @@
             //-根据要编辑的span初始化输入框及菜单-
             renderWriteHere = function() {
                 $span.hide();
-                var styleObj = styleToObj($span.attr('style'));
+                var styleObj = styleToObj($span.attr('style')),
+                    _fontFamily = styleObj['font-family'] || null,
+                    _fontSize = styleObj['font-size'] || null,
+                    _fontColor = styleObj['color'] || null,
+                    _fontWeight = styleObj['font-weight'] || null,
+                    _fontStyle = styleObj['font-style'] || null;
+
                 $writeHere.children('input')
                     .css({
-                        'font-family': styleObj['font-family'],
-                        'font-size': styleObj['font-size'],
-                        'color': styleObj['color'],
-                        'font-weight': styleObj['font-weight'],
-                        'font-style': styleObj['font-style']
+                        'font-family': _fontFamily,
+                        'font-size': _fontSize,
+                        'color': _fontColor,
+                        'font-weight': _fontWeight,
+                        'font-style': _fontStyle
                     })
                     .val($span.text());
                 //-字体-
-                $writeHere.find('.fontFamily')
-                    .css('font-family', styleObj['font-family'])
-                    .next()
-                    .children()
-                    .removeClass('active')
-                    .filter('a[data-fontFamily=' + styleObj['font-family'] + ']')
-                    .addClass('active');
+                _fontFamily ?
+                    $writeHere.find('.fontFamily')
+                        .css('font-family', _fontFamily)
+                        .next()
+                        .children()
+                        .removeClass('active')
+                        .filter('a[data-fontFamily=' + _fontFamily + ']')
+                        .addClass('active') :
+                    $writeHere.find('.fontFamily')
+                        .css('font-family', 'inherit')
+                        .next()
+                        .children()
+                        .removeClass('active');
+
                 //-字体大小-
-                $writeHere.find('.fontSize')
-                    .text(styleObj['font-size'])
-                    .next()
-                    .children()
-                    .removeClass('active')
-                    .filter('a[data-fontSize=' + styleObj['font-size'].replace('px', '') + ']')
-                    .addClass('active');
+                _fontSize ?
+                    $writeHere.find('.fontSize')
+                        .text(_fontSize)
+                        .next()
+                        .children()
+                        .removeClass('active')
+                        .filter('a[data-fontSize=' + _fontSize.replace('px', '') + ']')
+                        .addClass('active') :
+                    $writeHere.find('.fontSize')
+                        .text('大小')
+                        .next()
+                        .children()
+                        .removeClass('active');
                 //-字体颜色-
-                $writeHere.find('.fontColor')
-                    .css('color', styleObj['color'])
-                    .next()
-                    .children()
-                    .removeClass('active')
-                    .filter('a[data-fontColor=' + rgbToHex(styleObj['color']) + ']')
-                    .addClass('active');
+                _fontColor ?
+                    $writeHere.find('.fontColor')
+                        .css('color', _fontColor)
+                        .next()
+                        .children()
+                        .removeClass('active')
+                        .filter('a[data-fontColor=' + rgbToHex(_fontColor) + ']')
+                        .addClass('active') :
+                    $writeHere.find('.fontColor')
+                        .css('color', '#fff')
+                        .next()
+                        .children()
+                        .removeClass('active');
                 //-粗体-
-                styleObj['font-weight'] === 'bold' ?
+                _fontWeight === 'bold' ?
                     $writeHere.find('.bold').addClass('active') :
                     $writeHere.find('.bold').removeClass('active');
                 //-斜体-
-                styleObj['font-style'] === 'italic' ?
+                _fontStyle === 'italic' ?
                     $writeHere.find('.italic').addClass('active') :
                     $writeHere.find('.italic').removeClass('active');
                 return styleObj;
@@ -203,6 +228,7 @@
             showInput = function(e) {
                 if($(e.target).parents('.write-here').length > 0) return false;
 
+                $span && $span.show();
                 var left, top;
                 if(_option.editable && $(e.target).is('.writeHere-span')) {
                     $writeHere.addClass('editing');
@@ -262,6 +288,7 @@
         //-绑定关闭事件-
         $writeHere.children('.write-here-cancel').click(function() {
             var writeHere = $(this).parent();
+            writeHere.hasClass('editing') && $span.show();
             writeHere.hide();
         });
         //-绑定确定事件-
