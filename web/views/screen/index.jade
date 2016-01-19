@@ -13,7 +13,7 @@ block content
     include ../widget/header
 
     div.page-container(ng-controller='pagectrl')
-        span(ng-repeat='input in inputArray', style='{{input.style}}') {{input.text}}
+        span(class='writeHere-span', ng-repeat='input in inputArray', style='{{input.style}}') {{input.text}}
 
     script(type='text/javascript').
         JustLow
@@ -24,6 +24,7 @@ block content
                         fontFamilies: ['微软雅黑', 'guaiguai'],
                         backgroudColor: 'rgba(231, 97, 106, 0.7)',
                         menuBgColor: 'rgba(231, 97, 106, 0.9)',
+                        editable: true,
                         inputCallback: function(value, style) {
                             var create_time = new Date().getTime();
                             addInput.save({

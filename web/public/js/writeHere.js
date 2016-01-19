@@ -65,36 +65,36 @@
         return [
             '<ul class="write-here-tool">',
                 '<li>',
-                    '<a class="writeHere-tool-drop-btn" href="javascript:void(0);">字体</a>',
+                    '<a class="writeHere-tool-drop-btn fontFamily" href="javascript:void(0);">字体</a>',
                     function() {
                         var fontFamiliesHtml = '<nav class="select-menu">',
                             _fontFamilies = option.fontFamilies.length > 0 ? option.fontFamilies : fontFamilies;
                         for(var i = 0; i < _fontFamilies.length; i++) {
-                            fontFamiliesHtml += '<a href="javascript:void(0);" class="fontFamily" data-fontFamily="' + _fontFamilies[i] + '">' + _fontFamilies[i] + '</a>';
+                            fontFamiliesHtml += '<a href="javascript:void(0);" data-fontFamily="' + _fontFamilies[i] + '">' + _fontFamilies[i] + '</a>';
                         }
                         fontFamiliesHtml += '</nav>';
                         return fontFamiliesHtml;
                     }(),
                 '</li>',
                 '<li>',
-                    '<a class="writeHere-tool-drop-btn" href="javascript:void(0);">大小</a>',
+                    '<a class="writeHere-tool-drop-btn fontSize" href="javascript:void(0);">大小</a>',
                     function() {
                         var fontSizesHtml = '<nav class="select-menu">',
                             _fontSizes = option.fontSizes.length > 0 ? option.fontSizes : fontSizes;
                         for(var i = 0; i < _fontSizes.length; i++) {
-                            fontSizesHtml += '<a href="javascript:void(0);" class="fontSize" data-fontSize="' + _fontSizes[i] + '">' + _fontSizes[i] + 'px</a>';
+                            fontSizesHtml += '<a href="javascript:void(0);" data-fontSize="' + _fontSizes[i] + '">' + _fontSizes[i] + 'px</a>';
                         }
                         fontSizesHtml += '</nav>';
                         return fontSizesHtml;
                     }(),
                 '</li>',
                 '<li>',
-                    '<a class="writeHere-tool-drop-btn" href="javascript:void(0);">颜色</a>',
+                    '<a class="writeHere-tool-drop-btn fontColor" href="javascript:void(0);">颜色</a>',
                     function() {
                         var fontColorsHtml = '<nav class="color-select-menu">',
                             _fontColors = option.fontColors.length > 0 ? option.fontColors : fontColors;
                         for(var i = 0; i < _fontColors.length; i++) {
-                            fontColorsHtml += '<a href="javascript:void(0);" class="fontColor" data-fontColor="' + _fontColors[i] + '" style="background-color: ' + _fontColors[i] + '"></a>';
+                            fontColorsHtml += '<a href="javascript:void(0);" data-fontColor="' + _fontColors[i] + '" style="background-color: ' + _fontColors[i] + '"></a>';
                         }
                         fontColorsHtml += '</nav>';
                         return fontColorsHtml;
@@ -110,6 +110,29 @@
         ].join('\n');
     };
 
+    //-样式对象化-
+    var styleToObj = function(style) {
+        var styleArray = style.split(';'),
+            styleObj = {};
+        for(var i = 0; i < styleArray.length; i++) {
+            var styleOne = $.trim(styleArray[i]);
+            if(styleOne) {
+                var styleOneArr = styleOne.split(':');
+                styleObj[styleOneArr[0]] = $.trim(styleOneArr[1]);
+            }
+        }
+        return styleObj;
+    };
+
+    //-rgb转hex-
+    var rgbToHex = function(rgb) {
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        function hex(x) {
+            return ('0' + parseInt(x).toString(16)).slice(-2);
+        }
+        return '#' + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    };
+
     //-初始化插件-
     var init = function(self, option) {
         var _option = $.extend(true, {}, defaultOption, option);
@@ -119,6 +142,7 @@
 
         var containerLeft = self.offset().left,
             containerTop = self.offset().top,
+            //-输入框对象-
             $writeHere = $([
                 '<div class="write-here">',
                     getEditTool(_option),
@@ -127,10 +151,71 @@
                     '<span class="write-here-ok">&crarr;</span>',
                 '</div>'
             ].join('\n')),
+            $span,
+            //-根据要编辑的span初始化输入框及菜单-
+            renderWriteHere = function() {
+                $span.hide();
+                var styleObj = styleToObj($span.attr('style'));
+                $writeHere.children('input')
+                    .css({
+                        'font-family': styleObj['font-family'],
+                        'font-size': styleObj['font-size'],
+                        'color': styleObj['color'],
+                        'font-weight': styleObj['font-weight'],
+                        'font-style': styleObj['font-style']
+                    })
+                    .val($span.text());
+                //-字体-
+                $writeHere.find('.fontFamily')
+                    .css('font-family', styleObj['font-family'])
+                    .next()
+                    .children()
+                    .removeClass('active')
+                    .filter('a[data-fontFamily=' + styleObj['font-family'] + ']')
+                    .addClass('active');
+                //-字体大小-
+                $writeHere.find('.fontSize')
+                    .text(styleObj['font-size'])
+                    .next()
+                    .children()
+                    .removeClass('active')
+                    .filter('a[data-fontSize=' + styleObj['font-size'].replace('px', '') + ']')
+                    .addClass('active');
+                //-字体颜色-
+                $writeHere.find('.fontColor')
+                    .css('color', styleObj['color'])
+                    .next()
+                    .children()
+                    .removeClass('active')
+                    .filter('a[data-fontColor=' + rgbToHex(styleObj['color']) + ']')
+                    .addClass('active');
+                //-粗体-
+                styleObj['font-weight'] === 'bold' ?
+                    $writeHere.find('.bold').addClass('active') :
+                    $writeHere.find('.bold').removeClass('active');
+                //-斜体-
+                styleObj['font-style'] === 'italic' ?
+                    $writeHere.find('.italic').addClass('active') :
+                    $writeHere.find('.italic').removeClass('active');
+                return styleObj;
+            },
+            //-显示输入框-
             showInput = function(e) {
                 if($(e.target).parents('.write-here').length > 0) return false;
-                var left = e.pageX - containerLeft - 8,
+
+                var left, top;
+                if(_option.editable && $(e.target).is('.writeHere-span')) {
+                    $writeHere.addClass('editing');
+                    $span = $(e.target);
+                    var styleObj = renderWriteHere();
+                    left = parseInt(styleObj.left.replace('px', ''));
+                    top = parseInt(styleObj.top.replace('px', ''));
+                } else {
+                    $writeHere.removeClass('editing');
+                    left = e.pageX - containerLeft - 8;
                     top = e.pageY - containerTop - 15;
+                    $writeHere.children('input').val('');
+                }
                 $writeHere.css({
                     top: top,
                     left: left
@@ -143,22 +228,24 @@
                 } else {
                     $writeHere.show();
                 }
-                $writeHere.children('input').val('').focus();
+                $writeHere.children('input').focus();
             },
+            //-结束输入，转成span-
             endInput = function() {
-                var _this = $(this),
-                    writeHere = _this.parent(),
-                    input = writeHere.children('input'),
-                    value = input.val();
+                var input = $writeHere.children('input'),
+                    value = input.val(),
+                    edit = $writeHere.hasClass('editing');
+
                 if(!value) {
-                    writeHere.hide();
+                    $writeHere.hide();
+                    edit && $span.remove();
                     return false;
                 }
 
-                var top = writeHere.attr('data-top'),
-                    left = writeHere.attr('data-left'),
+                var top = $writeHere.attr('data-top'),
+                    left = $writeHere.attr('data-left'),
                     style = input.attr('style');
-                var $span = $('<span class="writeHere-span"/>').text(value).attr('style', style);
+                $span = edit ? $span.text(value).attr('style', style) : $('<span class="writeHere-span"/>').text(value).attr('style', style);
                 $span.css({
                     position: 'absolute',
                     top: top + 'px',
@@ -166,9 +253,10 @@
                     padding: '8px'
                 });
                 !_option.needBg && $span.css('background', 'transparent');
-                writeHere.hide();
-                self.append($span);
-                $.isFunction(_option.inputCallback) && _option.inputCallback(value, $span.attr('style'));
+                $writeHere.hide();
+                edit ? $span.show() : self.append($span);
+
+                $.isFunction(_option.inputCallback) && _option.inputCallback(value, $span.attr('style'), $span);
             };
 
         //-绑定关闭事件-
@@ -206,21 +294,22 @@
             _this.siblings().removeClass('active');
             _this.addClass('active');
 
-            var input = _this.closest('.write-here').children('input');
+            var dropDownBtn = _this.parent().prev(),
+                input = _this.closest('.write-here').children('input');
             switch(true) {
-                case _this.hasClass('fontFamily'):
+                case dropDownBtn.hasClass('fontFamily'):
                     var fontFamily = _this.attr('data-fontFamily');
-                    _this.parent().prev().css('font-family', fontFamily);
+                    dropDownBtn.css('font-family', fontFamily);
                     input.css('font-family', fontFamily);
                     break;
-                case _this.hasClass('fontSize'):
+                case dropDownBtn.hasClass('fontSize'):
                     var fontSize = _this.attr('data-fontSize') + 'px';
-                    _this.parent().prev().text(fontSize);
+                    dropDownBtn.text(fontSize);
                     input.css('font-size', fontSize);
                     break;
-                case _this.hasClass('fontColor'):
+                case dropDownBtn.hasClass('fontColor'):
                     var fontColor = _this.attr('data-fontColor');
-                    _this.parent().prev().css('color', fontColor);
+                    dropDownBtn.css('color', fontColor);
                     input.css('color', fontColor);
                     break;
                 default: break;
@@ -249,6 +338,12 @@
     //-撤销wrtieHere-
     var destroy = function(self) {
         if(!self.attr(containerAttr)) return false;
+
+        self.removeAttr(containerAttr);
+        self.children('.write-here').remove();
+        $('#writeHere_style').remove();
+        self.off('dblclick');
+        self.rightclick('off');
     };
 
     //-添加右击事件绑定-
@@ -275,12 +370,14 @@
 
         return this.each(function() {
             var _this = $(this);
-            if(_this.closest('[' + containerAttr + ']').length > 0) return false;
 
             if(otype(option) === 'string')
                 option === 'destroy' && destroy(_this);
-            else
+            else {
+                if(_this.parents('[' + containerAttr + ']').length > 0) return false;
+                _this.attr(containerAttr) && destroy(_this);
                 init(_this, option);
+            }
         });
     };
 
