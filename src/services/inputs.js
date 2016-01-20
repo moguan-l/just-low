@@ -9,8 +9,19 @@ var _getInputs = function(callback) {
 };
 
 var _addInput = function(data, callback) {
-    inputs.create(data, callback);
+    var input = new inputs(data);
+    input.save(callback);
+};
+
+var _updateInput = function(data, callback) {
+    inputs.update({_id: data._id}, data, {multi: true}, callback);
+};
+
+var _deleteInput = function(data, callback) {
+    inputs.remove(data, callback);
 };
 
 exports.getInputs = _getInputs;
 exports.addInput = _addInput;
+exports.updateInput = _updateInput;
+exports.deleteInput = _deleteInput;

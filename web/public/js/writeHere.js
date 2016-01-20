@@ -260,17 +260,11 @@
             endInput = function() {
                 var input = $writeHere.children('input'),
                     value = input.val(),
-                    edit = $writeHere.hasClass('editing');
-
-                if(!value) {
-                    $writeHere.hide();
-                    edit && $span.remove();
-                    return false;
-                }
-
-                var top = $writeHere.attr('data-top'),
+                    edit = $writeHere.hasClass('editing'),
+                    top = $writeHere.attr('data-top'),
                     left = $writeHere.attr('data-left'),
                     style = input.attr('style');
+
                 $span = edit ? $span.text(value).attr('style', style) : $('<span class="writeHere-span"/>').text(value).attr('style', style);
                 $span.css({
                     position: 'absolute',
@@ -280,9 +274,12 @@
                 });
                 !_option.needBg && $span.css('background', 'transparent');
                 $writeHere.hide();
-                edit ? $span.show() : self.append($span);
-
                 $.isFunction(_option.inputCallback) && _option.inputCallback(value, $span.attr('style'), $span);
+                if(!value) {
+                    edit && $span.remove();
+                    return false;
+                }
+                edit ? $span.show() : self.append($span);
             };
 
         //-绑定关闭事件-

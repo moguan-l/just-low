@@ -20,4 +20,14 @@
     justLowServices.factory('addInput', function($resource) {
         return $resource('inputs/add', {text: '@text', style: '@style', create_time: '@create_time'});
     });
+
+    //-编辑文字墙中的文字-
+    justLowServices.factory('updateInput', function($resource) {
+        return $resource('inputs/update', {_id: '@_id', text: '@text', style: '@style'});
+    });
+
+    //-删除文字墙中的文字-
+    justLowServices.factory('deleteInput', function($resource) {
+        return $resource('inputs/delete', {_id: '@_id'});
+    });
 }();
