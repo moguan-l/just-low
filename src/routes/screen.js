@@ -64,7 +64,6 @@ router.get('/inputs/search', function(req, res) {
 //-根据id获取文字墙-
 router.get('/walls/inputs/searchByWallId', function(req, res) {
     var inputs = require('../services/inputs');
-    console.log(req.query.wallId);
     inputs.getInputsByWallId(req.query.wallId, function(err, data) {
         res.json(data);
     });
