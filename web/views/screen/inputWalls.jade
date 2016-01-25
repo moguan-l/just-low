@@ -1,0 +1,22 @@
+extends ../layout/default
+
+block title
+    title=title
+
+block css
+    link(rel='stylesheet', href='/css/index.css')
+
+block content
+    include ../widget/header
+
+    div.page-container(ng-controller='pagectrl')
+        ul
+            li(ng-repeat='wall in walls')
+                a(href='/walls/{{wall.name}}') {{wall.name}}
+
+    script(type='text/javascript').
+        JustLow
+                .controller('pagectrl', function($scope, inputWallArray) {
+                    $scope.walls = inputWallArray.query();
+                });
+

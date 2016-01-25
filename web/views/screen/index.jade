@@ -6,9 +6,6 @@ block title
 block css
     link(rel='stylesheet', href='/css/index.css')
 
-block js
-    script(src='/js/writeHere.js')
-
 block content
     include ../widget/header
 
@@ -17,41 +14,6 @@ block content
 
     script(type='text/javascript').
         JustLow
-                .controller('pagectrl', function($scope, inputArray, addInput, updateInput, deleteInput) {
+                .controller('pagectrl', function($scope, inputArray) {
                     $scope.inputArray = inputArray.query();
-
-                    $('.page-container').writeHere({
-                        fontFamilies: ['微软雅黑', 'guaiguai'],
-                        backgroudColor: 'rgba(231, 97, 106, 0.7)',
-                        menuBgColor: 'rgba(231, 97, 106, 0.9)',
-                        editable: true,
-                        inputCallback: function(value, style, span) {
-                            var _id = span.attr('data-id');
-                            if(!_id) {
-                                if(!value) return false;
-                                var create_time = new Date().getTime();
-                                addInput.save({
-                                    text: value,
-                                    style: style,
-                                    create_time: create_time
-                                }, function(res) {
-                                    res.ok ? span.attr('data-id', res.data._id) : console.log('操作失败');
-                                });
-                            } else {
-                                if(value) {
-                                    updateInput.save({
-                                        _id: _id,
-                                        text: value,
-                                        style: style
-                                    }, function(res) {
-                                        res.ok ? console.log('操作成功') : console.log('操作失败');
-                                    });
-                                } else {
-                                    deleteInput.delete({_id: _id}, function(res) {
-                                        res.ok ? console.log('操作成功') : console.log('操作失败');
-                                    });
-                                }
-                            }
-                        }
-                    });
                 });

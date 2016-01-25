@@ -8,6 +8,11 @@ var _getInputs = function(callback) {
         .exec(typeof callback == 'function' ? callback : null);
 };
 
+var _getInputsByWallId = function(data, callback) {
+    inputs.find({wall_id: data})
+        .exec(typeof callback == 'function' ? callback : null);
+};
+
 var _addInput = function(data, callback) {
     var input = new inputs(data);
     input.save(callback);
@@ -22,6 +27,7 @@ var _deleteInput = function(data, callback) {
 };
 
 exports.getInputs = _getInputs;
+exports.getInputsByWallId = _getInputsByWallId;
 exports.addInput = _addInput;
 exports.updateInput = _updateInput;
 exports.deleteInput = _deleteInput;

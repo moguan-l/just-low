@@ -46,6 +46,7 @@ header .header-menu a:hover {
     color: #ac3644;
 }
 .page-container {
+    position: relative;
     margin-top: 158px;
     height: 800px;
 }

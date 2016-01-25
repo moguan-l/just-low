@@ -1,11 +1,11 @@
 header.flex#header
     nav.flex-1.text-right.header-menu
-        a(href='javascript:void(0);') 首页
+        a(href='/index') 首页
     span
         img.logo(src='/images/logo.png')
-        | JustLow
+        b=title
     nav.flex-1.text-left.header-menu
-        a(href='javascript:void(0);') 更多
+        a(href='/walls') 文字墙
 
 script(type='text/javascript').
     $(window).on('scroll', function() {

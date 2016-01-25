@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var inputs_schema = new mongoose.Schema({
     text: {type: types.string},
     style: {type: types.string},
+    wall_id: {type: types.string},
     create_time: {type: types.string}
 });
 
