@@ -1,11 +1,13 @@
 header.flex#header
-    nav.flex-1.text-right.header-menu
+    nav.flex-1.text-right.header-menu.flex
+        div.flex-1.header-menu-line
         a(href='/index') 首页
     span
         img.logo(src='/images/logo.png')
         b=title
-    nav.flex-1.text-left.header-menu
+    nav.flex-1.text-left.header-menu.flex
         a(href='/walls') 文字墙
+        div.flex-1.header-menu-line
 
 script(type='text/javascript').
     $(window).on('scroll', function() {

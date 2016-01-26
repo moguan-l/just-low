@@ -21,7 +21,8 @@ header.fixed {
     top: -94px;
     background: rgba(231, 97, 106, 0.9);
 }
-header >  span {
+header > span {
+    padding: 0 45px;
     font-size: 38px;
     color: #ac3644;
     font-weight: bolder;
@@ -35,7 +36,16 @@ header .logo {
     width: 100px;
 }
 header .header-menu {
-    padding: 64px 45px 0;
+    position: relative;
+    padding-top: 64px;
+}
+header .header-menu .header-menu-line {
+    margin-top: 16px;
+    height: 1px;
+    background-color: #e45164;
+}
+header.fixed .header-menu .header-menu-line {
+    background-color: #eee;
 }
 header .header-menu a {
     padding: 8px 20px;
@@ -49,11 +59,4 @@ header .header-menu a:hover {
     position: relative;
     margin-top: 158px;
     height: 800px;
-}
-.user-list {
-    margin: 15px 0;
-    width: 100%;
-}
-.user-list li {
-    float: left;
 }

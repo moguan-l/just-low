@@ -5,14 +5,24 @@ block title
 
 block css
     link(rel='stylesheet', href='/css/index.css')
+    style.
+        .page-container {
+            margin: 158px auto 0;
+            padding-top: 30px;
+            width: 50%;
+            min-width: 600px;
+        }
+
+block js
+    script(src='/js/filter.js')
 
 block content
     include ../widget/header
 
     div.page-container(ng-controller='pagectrl')
-        ul
-            li(ng-repeat='wall in walls')
-                a(href='/walls/{{wall.name}}') {{wall.name}}
+        ul.list
+            li.text-big(ng-repeat='wall in walls')
+                a(href='/walls/{{wall.name | decodeURI}}') {{wall.name | decodeURI}}
 
     script(type='text/javascript').
         JustLow
