@@ -22,7 +22,7 @@ header.fixed {
     background: rgba(231, 97, 106, 0.9);
 }
 header > span {
-    padding: 0 45px;
+    padding: 0 25px;
     font-size: 38px;
     color: #ac3644;
     font-weight: bolder;
@@ -37,6 +37,7 @@ header .logo {
 }
 header .header-menu {
     position: relative;
+    margin: 0 20px;
     padding-top: 64px;
 }
 header .header-menu .header-menu-line {
