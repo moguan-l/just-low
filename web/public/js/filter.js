@@ -5,5 +5,5 @@ JustLow
     .filter('decodeURI', function() {
         return function(input) {
             return decodeURI(input);
-        }
+        };
     });
