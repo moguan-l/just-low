@@ -7,10 +7,22 @@ block css
     link(rel='stylesheet', href='/css/index.css')
     style.
         .page-container {
+            position: relative;
             margin: 158px auto 0;
-            padding-top: 30px;
             width: 50%;
             min-width: 600px;
+        }
+        .add-content {
+            padding: 0 15px;
+            text-align: center;
+        }
+        .add-input {
+            padding: 8px;
+            border: 1px solid #E7616A;
+            outline: none;
+        }
+        .add-input.ng-invalid {
+            background-color: #E7BEC8;
         }
 
 block js
@@ -21,12 +33,37 @@ block content
 
     div.page-container(ng-controller='pagectrl')
         ul.list
-            li.text-big(ng-repeat='wall in walls')
+            li.text-normal(ng-repeat='wall in walls')
                 a(href='/walls/{{wall.name | decodeURI}}') {{wall.name | decodeURI}}
+            li.text-big.text-center
+                a.text-bold(href='javascript:void(0);', ng-click='changeDialogShow()') +
+        div.dialog-shadow.ng-hide(ng-show='dialogIsShow')
+            div.dialog
+                div.dialog-header
+                    p.dialog-title 添加文字墙
+                    a.dialog-close(href='javascript:void(0);', ng-click='changeDialogShow()') &times;
+                div.dialog-body
+                    div.add-content
+                        form(name='addForm', novalidate)
+                            label 文字墙名称：
+                            input.add-input(type='text', ng-model='wallName', required)
+                div.dialog-footer
+                    a(href='javascript:void(0);', ng-click='changeDialogShow()') 取消
+                    a(href='javascript:void(0);', ng-click='addWall()') 确定
 
     script(type='text/javascript').
         JustLow
                 .controller('pagectrl', function($scope, inputWallArray) {
                     $scope.walls = inputWallArray.query();
+                    $scope.dialogIsShow = false;
+                    $scope.changeDialogShow = function() {
+                        $scope.dialogIsShow = !$scope.dialogIsShow;
+                    };
+                    $scope.wallName = '';
+                    $scope.addWall = function() {
+                        if($scope.addForm.$valid) {
+                            window.location.href = '/walls/' + $scope.wallName;
+                        }
+                    };
                 });
 

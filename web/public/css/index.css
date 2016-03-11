@@ -19,7 +19,7 @@ header {
 header.fixed {
     position: fixed;
     top: -94px;
-    background: rgba(231, 97, 106, 0.9);
+    background-color: #E7616A;
 }
 header > span {
     padding: 0 25px;
@@ -42,7 +42,7 @@ header .header-menu {
 }
 header .header-menu .header-menu-line {
     margin-top: 16px;
-    height: 1px;
+    height: 2px;
     background-color: #e45164;
 }
 header.fixed .header-menu .header-menu-line {
@@ -51,10 +51,7 @@ header.fixed .header-menu .header-menu-line {
 header .header-menu a {
     padding: 8px 20px;
     font-size: 16px;
-    color: #e45164;
-}
-header .header-menu a:hover {
-    color: #ac3644;
+    font-weight: bold;
 }
 .page-container {
     position: relative;
