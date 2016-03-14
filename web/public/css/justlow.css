@@ -167,9 +167,7 @@ ul.list .delete-btn {
     right: 0;
     z-index: 1;
     display: none;
-    padding: 8px 15px;
-    color: #ffffff;
-    cursor: pointer;
+    width: auto;
 }
 ul.list > li:hover .delete-btn {
     display: block;

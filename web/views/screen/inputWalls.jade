@@ -29,6 +29,20 @@ block css
 
 block js
     script(src='/js/filter.js')
+    script(type='text/javascript').
+        JustLow
+                .config(function($routeProvider) {
+                    $routeProvider
+                            .when('/delete/:_id', {
+                                templateUrl: 'deleteWall.html',
+                                controller: 'deleteWallCtrl'
+                            }).when('/add', {
+                                templateUrl: 'addWall.html',
+                                controller: 'addWallCtrl'
+                            }).otherwise({
+                                redirectTo: '/'
+                            });
+                });
 
 block content
     include ../widget/header
@@ -37,56 +51,62 @@ block content
         ul.list
             li.text-normal(ng-repeat='wall in walls')
                 a(href='/walls/{{wall.name | decodeURI}}') {{wall.name | decodeURI}}
-                span.delete-btn(ng-click='changeDeleteDialogShow(wall._id)') &times;
+                a.delete-btn(href='#/delete/{{wall._id}}') &times;
             li.text-center
-                a(href='javascript:void(0);', ng-click='changeAddDialogShow()') +新墙
+                a(href='#/add')
+                    span.text-bold +&nbsp;
+                    | 新墙
+        div.dialog-shadow.ng-hide(ng-show='dialogIsShow', ng-view)
 
-        div.dialog-shadow.ng-hide(ng-show='deleteDialogIsShow')
-            div.dialog
-                div.dialog-header
-                    p.dialog-title 删除文字墙
-                    a.dialog-close(href='javascript:void(0);', ng-click='changeDeleteDialogShow()') &times;
-                div.dialog-body
-                    div.delete-content
-                        p 确认删除这个墙？
-                div.dialog-footer
-                    a(href='javascript:void(0);', ng-click='changeDeleteDialogShow()') 取消
-                    a(href='javascript:void(0);', ng-click='deleteWall()') 确定
-        div.dialog-shadow.ng-hide(ng-show='addDialogIsShow')
-            div.dialog
-                div.dialog-header
-                    p.dialog-title 添加文字墙
-                    a.dialog-close(href='javascript:void(0);', ng-click='changeAddDialogShow()') &times;
-                div.dialog-body
-                    div.add-content
-                        form.flex(name='addForm', novalidate)
-                            label 文字墙名称：
-                            input.add-input.flex-1(type='text', ng-model='wallName', required)
-                div.dialog-footer
-                    a(href='javascript:void(0);', ng-click='changeAddDialogShow()') 取消
-                    a(href='javascript:void(0);', ng-click='addWall()') 确定
+    script(type='text/ng-template', id='deleteWall.html')
+        div.dialog
+            div.dialog-header
+                p.dialog-title 删除文字墙
+                a.dialog-close(href='javascript:void(0);', ng-click='changeDialogShow()') &times;
+            div.dialog-body
+                div.delete-content
+                    p 确认删除这个墙？
+            div.dialog-footer
+                a(href='javascript:void(0);', ng-click='changeDialogShow()') 取消
+                a(href='javascript:void(0);', ng-click='deleteWall()') 确定
+
+    script(type='text/ng-template', id='addWall.html')
+        div.dialog
+            div.dialog-header
+                p.dialog-title 添加文字墙
+                a.dialog-close(href='javascript:void(0);', ng-click='changeDialogShow()') &times;
+            div.dialog-body
+                div.add-content
+                    form.flex(name='addForm', novalidate)
+                        label 文字墙名称：
+                        input.add-input.flex-1(type='text', ng-model='wallName', required)
+            div.dialog-footer
+                a(href='javascript:void(0);', ng-click='changeDialogShow()') 取消
+                a(href='javascript:void(0);', ng-click='addWall()') 确定
 
     script(type='text/javascript').
         JustLow
-                .controller('pagectrl', function($scope, inputWallArray, deleteWall) {
-                    $scope.walls = inputWallArray.query();
-                    $scope.addDialogIsShow = false;
-                    $scope.deleteDialogIsShow = false;
-                    $scope.changeDeleteDialogShow = function(wallId) {
-                        $scope.wallId = wallId;
-                        $scope.deleteDialogIsShow = !$scope.deleteDialogIsShow;
+                .controller('pagectrl', function($scope, $rootScope, inputWallArray, $location) {
+                    $rootScope.walls = inputWallArray.query();
+                    $rootScope.dialogIsShow = false;
+                    $rootScope.changeDialogShow = function() {
+                        $rootScope.dialogIsShow = false;
+                        $location.path('#/');
                     };
+                })
+                .controller('deleteWallCtrl', function($scope, $rootScope, $routeParams, deleteWall, inputWallArray) {
+                    $rootScope.dialogIsShow = true;
                     $scope.deleteWall = function() {
-                        deleteWall.delete({_id: $scope.wallId}, function(res) {
+                        deleteWall.delete({_id: $routeParams._id}, function(res) {
                             if(res.ok) {
-                                $scope.walls = inputWallArray.query();
-                                $scope.changeDeleteDialogShow();
+                                $rootScope.walls = inputWallArray.query();
+                                $rootScope.dialogIsShow = !$rootScope.dialogIsShow;
                             }
                         });
                     };
-                    $scope.changeAddDialogShow = function() {
-                        $scope.addDialogIsShow = !$scope.addDialogIsShow;
-                    };
+                })
+                .controller('addWallCtrl', function($scope, $rootScope) {
+                    $rootScope.dialogIsShow = true;
                     $scope.addWall = function() {
                         if($scope.addForm.$valid) {
                             window.location.href = '/walls/' + $scope.wallName;
