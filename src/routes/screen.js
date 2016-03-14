@@ -108,4 +108,14 @@ router.get('/inputWalls/search', function(req, res) {
     });
 });
 
+//-删除文字墙-
+router.delete('/walls/delete', function(req, res) {
+    var inputWalls = require('../services/inputWalls');
+    inputWalls.deleteInputWall(req.query, function(err) {
+        res.json({
+            ok: err ? false : true
+        });
+    });
+});
+
 module.exports = router;

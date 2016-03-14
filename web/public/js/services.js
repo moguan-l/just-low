@@ -40,4 +40,9 @@
     justLowServices.factory('inputWallArray', function($resource) {
         return $resource('inputWalls/search');
     });
+
+    //-删除文字墙-
+    justLowServices.factory('deleteWall', function($resource) {
+        return $resource('walls/delete', {_id: '@_id'});
+    });
 }();

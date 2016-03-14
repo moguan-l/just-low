@@ -141,11 +141,11 @@ input[type="number"] {
     font-weight: bold;
 }
 ul.list {
-    position: relative;
     width: 100%;
     background: transparent;
 }
 ul.list > li {
+    position: relative;
     width: 100%;
 }
 ul.list a {
@@ -157,9 +157,22 @@ ul.list a {
     -o-transition: background-color .5s;
     transition: background-color .5s;
 }
-ul.list a:hover {
+ul.list > li:hover a {
     color: #ffffff;
     background-color: #e45164;
+}
+ul.list .delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    display: none;
+    padding: 8px 15px;
+    color: #ffffff;
+    cursor: pointer;
+}
+ul.list > li:hover .delete-btn {
+    display: block;
 }
 .dialog-shadow {
     position: absolute;
@@ -170,7 +183,7 @@ ul.list a:hover {
 }
 .dialog {
     margin: 30px auto 0;
-    width: 80%;
+    width: 50%;
     min-width: 400px;
     background-color: #ffffff;
     border: 1px solid #E7616A;
@@ -200,7 +213,6 @@ ul.list a:hover {
 .dialog-footer {
     padding: 0 8px;
     text-align: right;
-    border-top: 1px solid #E7616A;
 }
 .dialog-footer a {
     padding: 9px;
