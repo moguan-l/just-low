@@ -146,7 +146,7 @@
             $writeHere = $([
                 '<div class="write-here">',
                     getEditTool(_option),
-                    '<input class="write-here-input" style="background: ' + _option.backgroudColor + '" type="text" maxlength="' + _option.inputLength + '"/>',
+                    '<input class="write-here-input" style="background: ' + _option.backgroudColor + '" type="text" placeholder="输入文字，回车&crarr;结束" maxlength="' + _option.inputLength + '"/>',
                     '<span class="write-here-cancel">&times;</span>',
                     '<span class="write-here-ok">&crarr;</span>',
                 '</div>'
@@ -185,7 +185,6 @@
                         .next()
                         .children()
                         .removeClass('active');
-
                 //-字体大小-
                 _fontSize ?
                     $writeHere.find('.fontSize')
@@ -415,16 +414,16 @@
         '.write-here-cancel, .write-here-ok { position: absolute; z-index: 1; display: inline-block; width: 16px; height: 16px; font-size: 16px; color: #fff; line-height: 18px; text-align: center; background-color: menuBgColor; cursor: pointer; }',
         '.write-here-cancel { top: 0; right: 0; }',
         '.write-here-ok { bottom: 0; right: 0; font-size: 12px; }',
-        '.write-here-tool { position: absolute; top: -37px; list-style: none; margin: 0; padding: 2px 8px; background-color: menuBgColor; }',
-        '.write-here-tool:after { content: ""; position: absolute; bottom: -10px; left: 0; width: 0; height: 0; border: 5px solid transparent; border-top-color: menuBgColor; }',
+        '.write-here-tool { position: absolute; top: -37px; list-style: none; margin: 0; padding: 2px 8px; background-color: menuBgColor; border-radius: 3px; }',
+        '.write-here-tool:after { content: ""; position: absolute; bottom: -10px; left: 2px; width: 0; height: 0; border: 5px solid transparent; border-top-color: menuBgColor; }',
         '.write-here-tool li { position: relative; float: left; }',
         '.write-here-tool li.drop-down:after { content: ""; position: absolute; bottom: -7px; left: 12px; width: 0; height: 0; border: 5px solid transparent; border-bottom-color: menuBgColor; }',
         '.write-here-tool li > a { padding: 5px 8px; font-size: 12px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
-        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 31px; left: -13px; display: none; overflow-y: auto; padding: 3px 0; width: 60px; height: 70px; background-color: menuBgColor; }',
+        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 31px; left: -13px; display: none; overflow-y: auto; padding: 3px 0; width: 60px; height: 70px; background-color: menuBgColor; border-radius: 3px; }',
         '.write-here-tool li.drop-down > .select-menu, .write-here-tool li.drop-down > .color-select-menu { display: block; }',
         '.write-here-tool .select-menu > a, .write-here-tool .color-select-menu > a { display: block; box-sizing: border-box; overflow: hidden; padding: 2px 6px; width: 100%; font-size: 10px; color: #fff; text-decoration: none; vertical-align: middle; text-overflow: ellipsis; white-space: nowrap; outline: none; cursor: pointer; }',
         '.write-here-tool .color-select-menu > a { height: 10px; }',
-        '.write-here-tool li.drop-down > a, .write-here-tool .select-menu > a.active, .writeHere-tool-btn.active { color: #e45164; text-decoration: none; }'
+        '.write-here-tool li.drop-down > a, .write-here-tool .select-menu > a.active, .writeHere-tool-btn.active { color: #6F1F29; text-decoration: none; }'
     ],
     ['#333333', '#66cffe', '#00d334', '#ff9404', '#fa636a', '#959595'],
     [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32],

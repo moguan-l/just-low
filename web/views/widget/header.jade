@@ -13,12 +13,15 @@ script(type='text/javascript').
     $(window).on('scroll', function() {
         var bodyScroll = document.body.scrollTop,
             needScroll = 94,
+            $header = $('#header'),
             $nav = $('#header > nav');
         if(bodyScroll <= needScroll) {
+            $header.css('background', 'rgba(213, 97, 106, ' + bodyScroll / needScroll + ')');
             $nav.css({'padding-top': 64 + bodyScroll * 33 / needScroll + 'px'});
-            $('#header').removeClass('fixed');
+            $header.removeClass('fixed');
         } else {
+            $header.css('background', 'rgba(213, 97, 106, 1)');
             $nav.css({'padding-top': 97 + 'px'});
-            $('#header').addClass('fixed');
+            $header.addClass('fixed');
         }
     });

@@ -9,17 +9,11 @@ header {
     padding: 12px 0;
     width: 100%;
     text-align: center;
-    background: transparent;
-    -webkit-transition: background .5s;
-    -moz-transition: background .5s;
-    -ms-transition: background .5s;
-    -o-transition: background .5s;
-    transition: background .5s;
+    background: rgba(213, 97, 106, 0);
 }
 header.fixed {
     position: fixed;
     top: -94px;
-    background-color: #E7616A;
 }
 header > span {
     padding: 0 25px;
