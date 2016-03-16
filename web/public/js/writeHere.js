@@ -139,6 +139,7 @@
 
         addStyle(_option.menuBgColor);
         formatContainer(self);
+        $('body').css('width', $(window).width());
 
         var containerLeft = self.offset().left,
             containerTop = self.offset().top,
@@ -410,19 +411,22 @@
     }(),
     [
         '.write-here { position: absolute; z-index: 1; display: inline-block; background: transparent; }',
-        '.write-here-input { padding: 10px 24px 10px 10px; width: 240px; border: none; outline: none; }',
+        '.write-here-input { padding: 10px 24px 10px 10px; width: 240px; border: none; border-radius: 3px; outline: none; }',
         '.write-here-cancel, .write-here-ok { position: absolute; z-index: 1; display: inline-block; width: 16px; height: 16px; font-size: 16px; color: #fff; line-height: 18px; text-align: center; background-color: menuBgColor; cursor: pointer; }',
-        '.write-here-cancel { top: 0; right: 0; }',
-        '.write-here-ok { bottom: 0; right: 0; font-size: 12px; }',
+        '.write-here-cancel { top: 0; right: 0; border-top-right-radius: 3px; }',
+        '.write-here-ok { bottom: 0; right: 0; font-size: 12px; border-bottom-right-radius: 3px; }',
         '.write-here-tool { position: absolute; top: -37px; list-style: none; margin: 0; padding: 2px 8px; background-color: menuBgColor; border-radius: 3px; }',
         '.write-here-tool:after { content: ""; position: absolute; bottom: -10px; left: 2px; width: 0; height: 0; border: 5px solid transparent; border-top-color: menuBgColor; }',
         '.write-here-tool li { position: relative; float: left; }',
         '.write-here-tool li.drop-down:after { content: ""; position: absolute; bottom: -7px; left: 12px; width: 0; height: 0; border: 5px solid transparent; border-bottom-color: menuBgColor; }',
         '.write-here-tool li > a { padding: 5px 8px; font-size: 12px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
-        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 31px; left: -13px; display: none; overflow-y: auto; padding: 3px 0; width: 60px; height: 70px; background-color: menuBgColor; border-radius: 3px; }',
+        '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 31px; left: -13px; display: none; overflow-y: auto; padding: 3px 0; width: 60px; background-color: menuBgColor; border-radius: 3px; }',
         '.write-here-tool li.drop-down > .select-menu, .write-here-tool li.drop-down > .color-select-menu { display: block; }',
+        '.write-here-tool li.drop-down > .color-select-menu { padding-right: 5px; }',
         '.write-here-tool .select-menu > a, .write-here-tool .color-select-menu > a { display: block; box-sizing: border-box; overflow: hidden; padding: 2px 6px; width: 100%; font-size: 10px; color: #fff; text-decoration: none; vertical-align: middle; text-overflow: ellipsis; white-space: nowrap; outline: none; cursor: pointer; }',
-        '.write-here-tool .color-select-menu > a { height: 10px; }',
+        '.write-here-tool .select-menu > a:hover { color: menuBgColor; background-color: #FFFFFF; }',
+        '.write-here-tool .color-select-menu > a { float: left; margin: 5px; margin-right: 0; width: 22.5px; height: 22.5px; border: 1px solid transparent;}',
+        '.write-here-tool .color-select-menu > a:hover { border-color: #FFFFFF; }',
         '.write-here-tool li.drop-down > a, .write-here-tool .select-menu > a.active, .writeHere-tool-btn.active { color: #6F1F29; text-decoration: none; }'
     ],
     ['#333333', '#66cffe', '#00d334', '#ff9404', '#fa636a', '#959595'],
