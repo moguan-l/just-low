@@ -20,6 +20,8 @@ body {
     font-size: 14px;
     color: #333;
     background-color: #fff;
+    background: url('../images/background/index_bg.png') no-repeat;
+    background-size: 100% auto;
 }
 ol, ul {
     list-style: none;
