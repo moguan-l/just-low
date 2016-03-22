@@ -88,13 +88,14 @@ block content
                         $location.path('#/');
                     };
                 })
-                .controller('deleteWallCtrl', function($scope, $rootScope, $routeParams, deleteWall, inputWallArray) {
+                .controller('deleteWallCtrl', function($scope, $rootScope, $routeParams, deleteWall, inputWallArray, $location) {
                     $rootScope.dialogIsShow = true;
                     $scope.deleteWall = function() {
                         deleteWall.delete({_id: $routeParams._id}, function(res) {
                             if(res.ok) {
                                 $rootScope.walls = inputWallArray.query();
-                                $rootScope.dialogIsShow = !$rootScope.dialogIsShow;
+                                $rootScope.dialogIsShow = false;
+                                $location.path('#/');
                             }
                         });
                     };
