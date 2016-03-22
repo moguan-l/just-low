@@ -4,7 +4,7 @@ header.flex#header
         a(href='/index') 首页
     span
         img.logo(src='/images/logo.png')
-        b=title
+        b= title
     nav.flex-1.text-left.header-menu.flex
         a(href='/walls') 文字墙
         div.flex-1.header-menu-line
@@ -16,11 +16,11 @@ script(type='text/javascript').
             $header = $('#header'),
             $nav = $('#header > nav');
         if(bodyScroll <= needScroll) {
-            $header.css('background', 'rgba(213, 97, 106, ' + bodyScroll / needScroll + ')');
+            $header.css('background', 'rgba(228, 81, 100, ' + bodyScroll / needScroll + ')');
             $nav.css({'padding-top': 64 + bodyScroll * 33 / needScroll + 'px'});
             $header.removeClass('fixed');
         } else {
-            $header.css('background', 'rgba(213, 97, 106, 1)');
+            $header.css('background', 'rgba(228, 81, 100, 1)');
             $nav.css({'padding-top': 97 + 'px'});
             $header.addClass('fixed');
         }

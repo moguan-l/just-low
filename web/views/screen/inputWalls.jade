@@ -1,14 +1,10 @@
 extends ../layout/default
 
-block title
-    title=title
-
 block css
     link(rel='stylesheet', href='/css/index.css')
     style.
         .page-container {
-            position: relative;
-            margin: 158px auto 0;
+            margin: 0 auto;
             width: 50%;
             min-width: 600px;
         }
@@ -45,8 +41,6 @@ block js
                 });
 
 block content
-    include ../widget/header
-
     div.page-container(ng-controller='pagectrl')
         ul.list
             li.text-normal(ng-repeat='wall in walls')
@@ -56,7 +50,7 @@ block content
                 a(href='#/add')
                     span.text-bold +&nbsp;
                     | 新墙
-        div.dialog-shadow.ng-hide(ng-show='dialogIsShow', ng-view)
+    div.dialog-shadow.ng-hide(ng-show='dialogIsShow', ng-view)
 
     script(type='text/ng-template', id='deleteWall.html')
         div.dialog

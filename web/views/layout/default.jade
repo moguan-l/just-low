@@ -2,8 +2,10 @@ doctype html
 html(lang='zh-CN', ng-app='JustLow')
     head
         block title
+            title= title
         link(rel='stylesheet', href='/css/justlow.css')
         block css
+            link(rel='stylesheet', href='/css/index.css')
         script(src='/js/libs/jquery-1.9.1.min.js')
         script(src='/js/libs/angular.min.js')
         script(src='/js/libs/angular-resource.min.js')
@@ -13,4 +15,8 @@ html(lang='zh-CN', ng-app='JustLow')
             window.JustLow = angular.module('JustLow', ['justLowServices', 'ngRoute']);
         block js
     body
+        block header
+            include ../widget/header
         block content
+        block footer
+            include ../widget/footer

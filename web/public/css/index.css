@@ -2,14 +2,23 @@
     font-family: guaiguai;
     src: url("../fonts/guaiguai.ttf");
 }
+html, body {
+    height: 100%;
+}
+body {
+    color: #ac3644;
+    background: #FFFFFF url('../images/background/index_bg.png') no-repeat fixed top;
+    background-size: 100% auto;
+}
 header {
     position: absolute;
     top: 0;
     z-index: 99;
     padding: 12px 0;
     width: 100%;
+    min-width: 600px;
     text-align: center;
-    background: rgba(213, 97, 106, 0);
+    background: rgba(228, 81, 100, 0);
 }
 header.fixed {
     position: fixed;
@@ -18,7 +27,6 @@ header.fixed {
 header > span {
     padding: 0 25px;
     font-size: 38px;
-    color: #ac3644;
     font-weight: bolder;
 }
 header.fixed > span, header.fixed .header-menu a {
@@ -34,6 +42,14 @@ header .header-menu {
     margin: 0 20px;
     padding-top: 64px;
 }
+header .header-menu:first-child {
+    background: url('../images/background/header_left.png') no-repeat;
+    background-size: auto 64px;
+}
+header .header-menu:last-child {
+    background: url('../images/background/header_right.png') no-repeat;
+    background-size: auto 64px;
+}
 header .header-menu .header-menu-line {
     margin-top: 16px;
     height: 2px;
@@ -47,8 +63,13 @@ header .header-menu a {
     font-size: 16px;
     font-weight: bold;
 }
+.page-container, .dialog-shadow {
+    padding-top: 158px;
+}
 .page-container {
+    box-sizing: border-box;
     position: relative;
-    margin-top: 158px;
-    height: 800px;
+    padding-bottom: 15px;
+    min-height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
 }

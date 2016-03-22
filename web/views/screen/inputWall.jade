@@ -1,17 +1,9 @@
 extends ../layout/default
 
-block title
-    title=title
-
-block css
-    link(rel='stylesheet', href='/css/index.css')
-
 block js
     script(src='/js/writeHere.js')
 
 block content
-    include ../widget/header
-
     div.page-container(ng-controller='pagectrl')
         span(class='writeHere-span', ng-repeat='input in inputArray', data-id='{{input._id}}', style='{{input.style}}') {{input.text}}
 
