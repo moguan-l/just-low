@@ -5,6 +5,7 @@ block content
         span(class='writeHere-span', ng-repeat='input in inputArray', data-id='{{input._id}}', style='{{input.style}}') {{input.text}}
 
     script(type='text/javascript').
-        JustLow.controller('pagectrl', function($scope, inputArray) {
+        JustLow
+                .controller('pagectrl', function($scope, inputArray) {
                     $scope.inputArray = inputArray.query();
                 });
