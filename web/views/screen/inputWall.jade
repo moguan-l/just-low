@@ -1,50 +1,53 @@
 extends ../layout/default
 
-block js
-    script(src='/js/writeHere.js')
-
 block content
     div.page-container(ng-controller='pagectrl')
         span(class='writeHere-span', ng-repeat='input in inputArray', data-id='{{input._id}}', style='{{input.style}}') {{input.text}}
 
+block bottomjs
+    script(src='/js/writeHere.js')
+    script(src='/js/common.js')
     script(type='text/javascript').
         JustLow
-                .controller('pagectrl', function($scope, inputArrayByWallId, addInput, updateInput, deleteInput) {
-                    var wallId = '#{wallId}';
-                    $scope.inputArray = inputArrayByWallId.query({wallId: wallId});
-                    $('.page-container').writeHere({
-                        fontFamilies: ['微软雅黑', 'guaiguai'],
-                        backgroudColor: 'rgba(231, 97, 106, 0.7)',
-                        menuBgColor: '#E7616A',
-                        editable: true,
-                        inputCallback: function(value, style, span) {
-                            var _id = span.attr('data-id');
-                            if(!_id) {
-                                if(!value) return false;
-                                var create_time = new Date().getTime();
-                                addInput.save({
+            .controller('pagectrl', function($scope, inputArrayByWallId, addInput, updateInput, deleteInput) {
+                var wallId = '#{wallId}';
+                inputArrayByWallId.query({wallId: wallId}, function(data) {
+                    $scope.inputArray = data;
+                    JL.pageConHInit(data);
+                });
+                $('.page-container').writeHere({
+                    fontFamilies: ['微软雅黑', 'guaiguai'],
+                    backgroudColor: 'rgba(231, 97, 106, 0.7)',
+                    menuBgColor: '#E7616A',
+                    editable: true,
+                    inputCallback: function(value, style, span) {
+                        var _id = span.attr('data-id');
+                        if(!_id) {
+                            if(!value) return false;
+                            var create_time = new Date().getTime();
+                            addInput.save({
+                                text: value,
+                                style: style,
+                                wall_id: wallId,
+                                create_time: create_time
+                            }, function(res) {
+                                res.ok ? span.attr('data-id', res.data._id) : console.log('操作失败');
+                            });
+                        } else {
+                            if(value) {
+                                updateInput.save({
+                                    _id: _id,
                                     text: value,
-                                    style: style,
-                                    wall_id: wallId,
-                                    create_time: create_time
+                                    style: style
                                 }, function(res) {
-                                    res.ok ? span.attr('data-id', res.data._id) : console.log('操作失败');
+                                    res.ok ? console.log('操作成功') : console.log('操作失败');
                                 });
                             } else {
-                                if(value) {
-                                    updateInput.save({
-                                        _id: _id,
-                                        text: value,
-                                        style: style
-                                    }, function(res) {
-                                        res.ok ? console.log('操作成功') : console.log('操作失败');
-                                    });
-                                } else {
-                                    deleteInput.delete({_id: _id}, function(res) {
-                                        res.ok ? console.log('操作成功') : console.log('操作失败');
-                                    });
-                                }
+                                deleteInput.delete({_id: _id}, function(res) {
+                                    res.ok ? console.log('操作成功') : console.log('操作失败');
+                                });
                             }
                         }
-                    });
+                    }
                 });
+            });

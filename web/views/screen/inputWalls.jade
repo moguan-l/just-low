@@ -3,10 +3,14 @@ extends ../layout/default
 block css
     link(rel='stylesheet', href='/css/index.css')
     style.
+        html, body {
+            height: 100%;
+        }
         .page-container {
             margin: 0 auto;
             width: 50%;
             min-width: 600px;
+            min-height: 100%;
         }
         .delete-content, .add-content {
             padding: 0 15px;
@@ -24,21 +28,21 @@ block css
         }
 
 block js
-    script(src='/js/filter.js')
+    script(src='/js/filters.js')
     script(type='text/javascript').
         JustLow
-                .config(function($routeProvider) {
-                    $routeProvider
-                            .when('/delete/:_id', {
-                                templateUrl: 'deleteWall.html',
-                                controller: 'deleteWallCtrl'
-                            }).when('/add', {
-                                templateUrl: 'addWall.html',
-                                controller: 'addWallCtrl'
-                            }).otherwise({
-                                redirectTo: '/'
-                            });
-                });
+            .config(function($routeProvider) {
+                $routeProvider
+                    .when('/delete/:_id', {
+                        templateUrl: 'deleteWall.html',
+                        controller: 'deleteWallCtrl'
+                    }).when('/add', {
+                        templateUrl: 'addWall.html',
+                        controller: 'addWallCtrl'
+                    }).otherwise({
+                        redirectTo: '/'
+                    });
+            });
 
 block content
     div.page-container(ng-controller='pagectrl')
@@ -78,33 +82,34 @@ block content
                 a(href='javascript:void(0);', ng-click='changeDialogShow()') 取消
                 a(href='javascript:void(0);', ng-click='addWall()') 确定
 
+block bottomjs
     script(type='text/javascript').
         JustLow
-                .controller('pagectrl', function($scope, $rootScope, inputWallArray, $location) {
-                    $rootScope.walls = inputWallArray.query();
+            .controller('pagectrl', function($scope, $rootScope, inputWallArray, $location) {
+                $rootScope.walls = inputWallArray.query();
+                $rootScope.dialogIsShow = false;
+                $rootScope.changeDialogShow = function() {
                     $rootScope.dialogIsShow = false;
-                    $rootScope.changeDialogShow = function() {
-                        $rootScope.dialogIsShow = false;
-                        $location.path('#/');
-                    };
-                })
-                .controller('deleteWallCtrl', function($scope, $rootScope, $routeParams, deleteWall, inputWallArray, $location) {
-                    $rootScope.dialogIsShow = true;
-                    $scope.deleteWall = function() {
-                        deleteWall.delete({_id: $routeParams._id}, function(res) {
-                            if(res.ok) {
-                                $rootScope.walls = inputWallArray.query();
-                                $rootScope.dialogIsShow = false;
-                                $location.path('#/');
-                            }
-                        });
-                    };
-                })
-                .controller('addWallCtrl', function($scope, $rootScope) {
-                    $rootScope.dialogIsShow = true;
-                    $scope.addWall = function() {
-                        if($scope.addForm.$valid) {
-                            window.location.href = '/walls/' + $scope.wallName;
+                    $location.path('#/');
+                };
+            })
+            .controller('deleteWallCtrl', function($scope, $rootScope, $routeParams, deleteWall, inputWallArray, $location) {
+                $rootScope.dialogIsShow = true;
+                $scope.deleteWall = function() {
+                    deleteWall.delete({_id: $routeParams._id}, function(res) {
+                        if(res.ok) {
+                            $rootScope.walls = inputWallArray.query();
+                            $rootScope.dialogIsShow = false;
+                            $location.path('#/');
                         }
-                    };
-                });
+                    });
+                };
+            })
+            .controller('addWallCtrl', function($scope, $rootScope) {
+                $rootScope.dialogIsShow = true;
+                $scope.addWall = function() {
+                    if($scope.addForm.$valid) {
+                        window.location.href = '/walls/' + $scope.wallName;
+                    }
+                };
+            });

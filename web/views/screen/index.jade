@@ -4,8 +4,13 @@ block content
     div.page-container(ng-controller='pagectrl')
         span(class='writeHere-span', ng-repeat='input in inputArray', data-id='{{input._id}}', style='{{input.style}}') {{input.text}}
 
+block bottomjs
+    script(src='/js/common.js')
     script(type='text/javascript').
         JustLow
-                .controller('pagectrl', function($scope, inputArray) {
-                    $scope.inputArray = inputArray.query();
-                });
+            .controller('pagectrl', function($scope, inputArray) {
+                inputArray.query(function(data) {
+                    $scope.inputArray = data;
+                    JL.pageConHInit(data);
+                })
+            });
