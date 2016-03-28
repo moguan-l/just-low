@@ -2,6 +2,9 @@
     font-family: guaiguai;
     src: url("../fonts/guaiguai.ttf");
 }
+html, body {
+    height: 100%;
+}
 body {
     color: #ac3644;
     background: #FFFFFF url('../images/background/index_bg.png') no-repeat fixed top;
@@ -13,7 +16,6 @@ header {
     z-index: 99;
     padding: 12px 0;
     width: 100%;
-    min-width: 600px;
     text-align: center;
     background: rgba(228, 81, 100, 0);
 }

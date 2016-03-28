@@ -13,7 +13,7 @@ block bottomjs
                 var wallId = '#{wallId}';
                 inputArrayByWallId.query({wallId: wallId}, function(data) {
                     $scope.inputArray = data;
-                    JL.pageConHInit(data);
+                    JL.writeHerePageConHInit(data);
                 });
                 $('.page-container').writeHere({
                     fontFamilies: ['微软雅黑', 'guaiguai'],

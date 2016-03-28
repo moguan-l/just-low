@@ -6,7 +6,7 @@ var JL = {};
 /**
  * 添加属性
  */
-JL.pageConHInit = function(data) {
+JL.writeHerePageConHInit = function(data) {
     var extraH = 150,
         bottomSpanTop = 0;
     var $pageContainer = $('.page-container');
@@ -21,10 +21,7 @@ JL.pageConHInit = function(data) {
 
     function renderH() {
         var winH = $(window).height();
-        if(bottomSpanTop + extraH < winH) {
-            $pageContainer.css('height', winH + 'px');
-            return false;
-        }
+        if(bottomSpanTop + extraH < winH) return false;
         $pageContainer.css('height', bottomSpanTop + extraH + 'px');
     }
     //-样式对象化-
