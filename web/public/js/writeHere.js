@@ -313,10 +313,12 @@
                         $writeHere.css({top: _y, left: _x});
                     }
                 }).on('mouseup', function() {
-                    moveFlag = false;
-                    $writeHere.children('input').focus();
-                    $writeHere.attr('data-top', _y);
-                    $writeHere.attr('data-left', _x);
+                    if(moveFlag) {
+                        moveFlag = false;
+                        $writeHere.children('input').focus();
+                        $writeHere.attr('data-top', _y);
+                        $writeHere.attr('data-left', _x);
+                    }
                 });
             };
 
