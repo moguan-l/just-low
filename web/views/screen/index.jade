@@ -11,6 +11,6 @@ block bottomjs
             .controller('pagectrl', function($scope, inputArray) {
                 inputArray.query(function(data) {
                     $scope.inputArray = data;
-                    //JL.writeHerePageConHInit(data);
+                    JL.writeHerePageConHInit(data);
                 })
             });

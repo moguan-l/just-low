@@ -17,6 +17,7 @@
      * fontSizes: number[], 字体大小，默认值见下面fontSizes
      * fontFamilies: string[], 字体，默认值见下面fontFamilies
      * editable: boolean, 已经写好的字是否可编辑，默认不能
+     * draggable: boolean, 输入框是否支持可拖拽，默认true
      * inputCallback: function, 输入结束回车之后的回调函数，默认为空，回调函数返回的参数为输入框内容及文字样式（字符串）
      */
     var defaultOption = {
@@ -29,6 +30,7 @@
             fontSizes: fontSizes,
             fontFamilies: fontFamilies,
             editable: false,
+            draggable: true,
             inputCallback: null
         },
         //-允许的参数类型-
@@ -106,6 +108,12 @@
                 '<li>',
                     '<a class="writeHere-tool-btn italic" href="javascript:void(0);">倾斜</a>',
                 '</li>',
+                function() {
+                    if(!option.draggable) return '';
+                    return '<li>' +
+                                '<span class="dragBtn">&Xi;</span>' +
+                            '</li>';
+                }(),
             '</ul>'
         ].join('\n');
     };
@@ -280,6 +288,36 @@
                     return false;
                 }
                 edit ? $span.show() : self.append($span);
+            },
+            onDrag = function() {
+                //-这个拖拽不限制拖拽边缘，允许拖到可视区域之外-
+                var dragBtn = $writeHere.find('.dragBtn');
+                var moveFlag = false;
+                var _x = 0, _y = 0; //-输入框左上角距离容器左上角的距离-
+                var _mx = 0, _my = 0; //-鼠标的位置-
+                dragBtn.on('mousedown', function(e) {
+                    moveFlag = true;
+                    _x = $writeHere.offset().left;
+                    _y = $writeHere.offset().top;
+                    _mx = e.pageX;
+                    _my = e.pageY;
+                });
+                $(document).on('mousemove', function(e) {
+                    if(moveFlag) {
+                        var mxd = e.pageX - _mx,
+                            myd = e.pageY - _my;
+                        _mx = e.pageX;
+                        _my = e.pageY;
+                        _x = _x + mxd;
+                        _y = _y + myd;
+                        $writeHere.css({top: _y, left: _x});
+                    }
+                }).on('mouseup', function() {
+                    moveFlag = false;
+                    $writeHere.children('input').focus();
+                    $writeHere.attr('data-top', _y);
+                    $writeHere.attr('data-left', _x);
+                });
             };
 
         //-绑定关闭事件-
@@ -355,6 +393,8 @@
                     input.css('font-style', 'normal');
             }
         });
+        //-绑定拖拽事件-
+        _option.draggable && onDrag();
 
         _option.showInputType === 'dblclick' ? self.on('dblclick', showInput) : self.rightclick(showInput);
     };
@@ -420,6 +460,7 @@
         '.write-here-tool li { position: relative; float: left; }',
         '.write-here-tool li.drop-down:after { content: ""; position: absolute; bottom: -7px; left: 12px; width: 0; height: 0; border: 5px solid transparent; border-bottom-color: menuBgColor; }',
         '.write-here-tool li > a { padding: 5px 8px; font-size: 12px; color: #fff; text-decoration: none; vertical-align: middle; outline: none; }',
+        '.write-here-tool li > .dragBtn { display: inline-block; padding: 5px 0 5px 8px; font-size: 12px; color: #fff; cursor: move; }',
         '.write-here-tool .select-menu, .write-here-tool .color-select-menu { position: absolute; top: 31px; left: -13px; display: none; overflow-y: auto; padding: 3px 0; width: 60px; background-color: menuBgColor; border-radius: 3px; }',
         '.write-here-tool li.drop-down > .select-menu, .write-here-tool li.drop-down > .color-select-menu { display: block; }',
         '.write-here-tool li.drop-down > .color-select-menu { padding-right: 5px; }',
