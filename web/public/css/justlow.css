@@ -182,14 +182,15 @@ ul.list > li:hover .delete-btn {
 }
 .dialog {
     margin: 0 auto;
-    width: 40%;
-    background-color: #ffffff;
-    border: 1px solid #E7616A;
+    width: 30%;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 1px #ccc;
 }
 .dialog-header {
     position: relative;
     color: #ffffff;
     background-color: #E7616A;
+    box-shadow: 0 -1px 1px #e45164;
 }
 .dialog-title {
     padding: 8px;
@@ -211,6 +212,7 @@ ul.list > li:hover .delete-btn {
 .dialog-footer {
     padding: 0 8px;
     text-align: right;
+    background-color: #f5f5f5;
 }
 .dialog-footer a {
     padding: 9px;
