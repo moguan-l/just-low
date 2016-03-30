@@ -41,11 +41,11 @@ header .header-menu {
     margin: 0 20px;
     padding-top: 64px;
 }
-header .header-menu:first-child {
+header .header-menu.text-right {
     background: url('../images/background/header_left.png') no-repeat;
     background-size: auto 64px;
 }
-header .header-menu:last-child {
+header .header-menu.text-left {
     background: url('../images/background/header_right.png') no-repeat;
     background-size: auto 64px;
 }
