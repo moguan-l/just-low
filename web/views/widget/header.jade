@@ -10,18 +10,20 @@ header.flex#header
         div.flex-1.header-menu-line
 
     script(type='text/javascript').
-        $(window).on('scroll', function() {
-            var bodyScroll = document.body.scrollTop,
-                    needScroll = 94,
-                    $header = $('#header'),
-                    $nav = $('#header > nav');
-            if(bodyScroll <= needScroll) {
-                $header.css('background', 'rgba(228, 81, 100, ' + bodyScroll / needScroll + ')');
-                $nav.css({'padding-top': 64 + bodyScroll * 33 / needScroll + 'px'});
-                $header.removeClass('fixed');
-            } else {
-                $header.css('background', 'rgba(228, 81, 100, 1)');
-                $nav.css({'padding-top': 97 + 'px'});
-                $header.addClass('fixed');
-            }
-        });
+        !function() {
+            var needScroll = 94,
+                $header = $('#header'),
+                $nav = $('#header > nav');
+            $(window).on('scroll', function() {
+                var bodyScroll = document.body.scrollTop;
+                if(bodyScroll <= needScroll) {
+                    $header.css('background', 'rgba(228, 81, 100, ' + bodyScroll / needScroll + ')');
+                    $nav.css({'padding-top': 64 + bodyScroll * 33 / needScroll + 'px'});
+                    $header.removeClass('fixed');
+                } else {
+                    $header.css('background', 'rgba(228, 81, 100, 1)');
+                    $nav.css({'padding-top': 97 + 'px'});
+                    $header.addClass('fixed');
+                }
+            });
+        }();

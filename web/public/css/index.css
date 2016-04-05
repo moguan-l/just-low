@@ -28,9 +28,6 @@ header > span {
     font-size: 38px;
     font-weight: bolder;
 }
-header.fixed > span, header.fixed .header-menu a {
-    color: #eee;
-}
 header .logo {
     display: block;
     margin: 0 auto;
@@ -53,6 +50,11 @@ header .header-menu .header-menu-line {
     margin-top: 16px;
     height: 2px;
     background-color: #e45164;
+    -webkit-transition: background 1s;
+    -moz-transition: background 1s;
+    -ms-transition: background 1s;
+    -o-transition: background 1s;
+    transition: background 1s;
 }
 header.fixed .header-menu .header-menu-line {
     background-color: #eee;
@@ -61,6 +63,14 @@ header .header-menu a {
     padding: 8px 20px;
     font-size: 16px;
     font-weight: bold;
+    -webkit-transition: color 1s;
+    -moz-transition: color 1s;
+    -ms-transition: color 1s;
+    -o-transition: color 1s;
+    transition: color 1s;
+}
+header.fixed > span, header.fixed .header-menu a {
+    color: #eee;
 }
 .page-container, .dialog-shadow {
     padding-top: 158px;
